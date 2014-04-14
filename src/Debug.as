@@ -1,11 +1,6 @@
-package {
-	import gamescreen.GameMVC;
-	import gamescreen.GameScreen;
-	import gamescreen.gamecontroller.GameController;
-	import gamescreen.gamemodel.GameModel;
-	import gamescreen.gameview.GameView;
-	import menuscreen.MenuScreen;
-	import com.supagrip.getSimpleToString;
+package 
+{
+	import utils.debug.getSimpleToString;
 	/**
 	 * @author damrem
 	 */
@@ -15,22 +10,9 @@ package {
 		{
 			var classes:Vector.<Class> = new <Class>
 			[
-				Preloader, 
 				Main,
-				//DeviceSettings,
-				
-				//Navigator,
-				
-				//AssetBank,
-				//ProgressBar,
-				
-				//MenuScreen,
-				
-				//GameScreen,
-				//GameMVC,
-				//GameController,
-				//GameModel,
-				//GameView
+				Root,
+				Game
 			];
 			
 			for each(var classToDebug:Class in classes)

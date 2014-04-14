@@ -1,4 +1,4 @@
-package loadingscreen
+package gui
 {
 	import flash.display.Sprite;
 	import flash.display.BitmapData;

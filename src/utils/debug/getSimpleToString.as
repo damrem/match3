@@ -1,4 +1,4 @@
-package com.supagrip 
+package utils.debug 
 {
 	/**
 	 * @author damrem

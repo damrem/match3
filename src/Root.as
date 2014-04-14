@@ -3,28 +3,25 @@ package {
 	import starling.display.Sprite;
 	import starling.textures.Texture;
 
-	import com.supagrip.smart.IRoot;
-
 	/**
 	 * @author damrem
 	 */
-	public class Root extends Sprite implements IRoot 
+	public class Root extends Sprite
 	{
 		public static var verbose:Boolean;
 		
 		public function Root() 
 		{
-			if(verbose)	trace(this + "Root(" + arguments);
+			if (verbose)	trace(this + "Root(" + arguments);
+			
+			var game:Game = new Game();
+			this.addChild(game);
 		}
 
 		public function start() : void 
 		{
-			if(verbose)	trace(this + "start(" + arguments);
-			this.addChild(new Image(backgroundTexture));
+			if (verbose)	trace(this + "start(" + arguments);
 			
-			var navigator:Navigator = new Navigator();
-			this.addChild(navigator);
-			navigator.gotoMenu();
 		}
 	}
 }
