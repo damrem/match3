@@ -1,6 +1,10 @@
 package 
 {
-	import utils.debug.getSimpleToString;
+	import utils.getSimpleToString;
+	import thegame.GameScreen;
+	import thegame.Board;
+	import thegame.Gem;
+	
 	/**
 	 * @author damrem
 	 */
@@ -12,7 +16,10 @@ package
 			[
 				Main,
 				Root,
-				Game
+				GameScreen,
+				Board, 
+				Gem,
+				Assets
 			];
 			
 			for each(var classToDebug:Class in classes)

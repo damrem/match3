@@ -1,4 +1,4 @@
-package utils.debug 
+package utils 
 {
 	/**
 	 * @author damrem

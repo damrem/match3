@@ -25,6 +25,21 @@ package {
 		[Embed(source = 'assets/textures/BackGround.jpg')]
 		public static var Background:Class;
 		
+		[Embed(source = 'assets/textures/Yellow.png')]
+		public static var Yellow:Class;
+		
+		[Embed(source = 'assets/textures/Red.png')]
+		public static var Red:Class;
+		
+		[Embed(source = 'assets/textures/Purple.png')]
+		public static var Purple:Class;
+		
+		[Embed(source = 'assets/textures/Green.png')]
+		public static var Green:Class;
+		
+		[Embed(source = 'assets/textures/Blue.png')]
+		public static var Blue:Class;
+		
 		
 	}
 }

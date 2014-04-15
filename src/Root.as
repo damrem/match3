@@ -2,6 +2,7 @@ package {
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.textures.Texture;
+	import thegame.GameScreen;
 
 	/**
 	 * @author damrem
@@ -14,8 +15,8 @@ package {
 		{
 			if (verbose)	trace(this + "Root(" + arguments);
 			
-			var game:Game = new Game();
-			this.addChild(game);
+			var gameScreen:GameScreen = new GameScreen();
+			this.addChild(gameScreen);
 		}
 
 		public function start() : void 
