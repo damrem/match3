@@ -70,7 +70,6 @@ package mygame
 				var pawn:Pawn = new Pawn(i);
 				pawn.x = (i % WIDTH) * Pawn.SIZE;
 				var row:int = Math.floor(i / WIDTH);
-				if(verbose)	trace(row);
 				pawn.y = row * Pawn.SIZE;
 				this.pawns[i] = pawn;
 				this.addChild(pawn);
@@ -145,10 +144,12 @@ package mygame
 		
 		public function getLeftPawn(refPawn:Pawn):Pawn
 		{
+			//if (verbose)	trace(refPawn.index + "%" + WIDTH + "=" + (refPawn.index % WIDTH));
 			if (refPawn.index % WIDTH == 0)
 			{
 				return null;
 			}
+			//if (verbose)	trace("pawns[" + (refPawn.index - 1) + "]=" + this.pawns[refPawn.index - 1]);
 			return this.pawns[refPawn.index - 1];
 		}
 		
@@ -214,7 +215,7 @@ package mygame
 			
 			this.pawns[pawn.index] = null;
 			this.pawns[destIndex] = pawn;
-			pawn.index = destIndex;
+			pawn.setIndex(destIndex);
 		}
 		
 		/**
@@ -234,20 +235,11 @@ package mygame
 			this.swappablePawns = new <Pawn>[];
 		}
 		
-		
-		
 		public function resetMatchablePawns():void 
 		{
 			if (verbose)	trace(this + "resetMatchablePawns(" + arguments);
 			
 			this.matchablePawns = new <Pawn>[];
-		}
-		
-		public function resetFallablePawns():void 
-		{
-			if (verbose)	trace(this + "resetFallablePawns(" + arguments);
-			
-			this.fallablePawns = new <Pawn>[];
 		}
 		
 		public function resetDestroyablePawns():void 
@@ -257,11 +249,22 @@ package mygame
 			this.destroyablePawns = new <Pawn>[];
 		}
 		
-		public function electPawnForDestruction(pawn:Pawn):void
+		public function resetFallablePawns():void 
 		{
-			if (verbose)	trace(this + "electPawnForDestruction(" + arguments);
+			if (verbose)	trace(this + "resetFallablePawns(" + arguments);
 			
-			this.destroyablePawns.push(pawn);
+			this.fallablePawns = new <Pawn>[];
+		}
+		
+		
+		
+		
+		public function electPawnsForSwapping(pawn1:Pawn, pawn2:Pawn):void 
+		{
+			if (verbose)	trace(this + "electPawnForMatching(" + arguments);
+			
+			this.swappablePawns.push(pawn1);
+			this.swappablePawns.push(pawn2);
 		}
 		
 		public function electPawnForMatching(pawn:Pawn):void 
@@ -271,13 +274,16 @@ package mygame
 			this.matchablePawns.push(pawn);
 		}
 		
-		public function electPawnsForSwapping(pawn1:Pawn, pawn2:Pawn):void 
+		public function electPawnForDestruction(pawn:Pawn):void
 		{
-			if (verbose)	trace(this + "electPawnForMatching(" + arguments);
+			if (verbose)	trace(this + "electPawnForDestruction(" + arguments);
 			
-			this.swappablePawns.push(pawn1);
-			this.swappablePawns.push(pawn2);
+			this.destroyablePawns.push(pawn);
 		}
+		
+		
+		
+		
 		
 		public function arePawnsNeighbors(pawn1:Pawn, pawn2:Pawn):Boolean
 		{

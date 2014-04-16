@@ -27,6 +27,8 @@ package mygame.states
 		{
 			if (verbose)	trace(this + "enter(" + arguments);
 			
+			if (verbose)	trace("destroyables: "+this.board.destroyablePawns);
+			
 			for (var i:int = 0; i < this.board.destroyablePawns.length; i++)
 			{
 				if (this.board.destroyablePawns[i])	//	this test prevents from destroying a pawn who would be in 2 matches (horizontal & vertical)

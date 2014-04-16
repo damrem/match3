@@ -3,12 +3,12 @@ package
 	import mygame.Board;
 	import mygame.GameController;
 	import mygame.GameScreen;
-	import mygame.Pawn;
 	import mygame.states.FallAndFill;
 	import mygame.states.InputListener;
-	import mygame.states.PawnDestroyer;
-	import utils.getSimpleToString;
 	import mygame.states.MatchChecker;
+	import mygame.states.PawnDestroyer;
+	import mygame.states.PawnSwapper;
+	import utils.getSimpleToString;
 	
 	/**
 	 * @author damrem
@@ -27,7 +27,7 @@ package
 				InputListener,
 				PawnDestroyer,
 				Board, 
-				Pawn,
+				PawnSwapper,
 				Assets,
 				FallAndFill,
 				MatchChecker

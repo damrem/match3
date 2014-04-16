@@ -48,8 +48,8 @@ package mygame
 			this.pawnSwapper.UNSWAPPED.add(this.gotoInputListener);
 
 			this.matchChecker = new MatchChecker(board);
-			this.matchChecker.MATCHES.add(this.gotoPawnDestroyer);
-			this.matchChecker.NO_MATCHES.add(this.gotoInputListener);
+			this.matchChecker.MATCHES_FOUND.add(this.gotoPawnDestroyer);
+			this.matchChecker.NO_MATCHES_FOUND.add(this.gotoInputListener);
 			
 			this.pawnDestroyer = new PawnDestroyer(board);
 			this.pawnDestroyer.ALL_ARE_DESTROYED.add(this.gotoFillAndFall);

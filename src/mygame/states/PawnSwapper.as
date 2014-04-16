@@ -29,12 +29,16 @@ package mygame.states
 			
 			//	we swap the indexes of the 2 pawns on the board
 			var index1:int = pawn1.index;
-			pawn1.index = pawn2.index;
-			pawn2.index = index1;
+			
+			this.board.setPawnIndex(pawn1, pawn2.index);
+			this.board.setPawnIndex(pawn2, index1);
+			
+			this.board.electPawnForMatching(pawn1);
+			this.board.electPawnForMatching(pawn2);
 			
 			//	we start the animations
-			this.startSwappingPawn(this.board.swappablePawns[0], true);
-			this.startSwappingPawn(this.board.swappablePawns[1], false);
+			this.startSwappingPawn(pawn1, true);
+			this.startSwappingPawn(pawn2, false);
 			
 			//	no more swapping
 			this.board.resetSwappablePawns();
@@ -62,6 +66,8 @@ package mygame.states
 		
 		private function onSwappingComplete():void 
 		{
+			if (verbose)	trace(this + "onSwappingComplete(" + arguments);
+			
 			this.SWAPPED.dispatch();
 		}
 		

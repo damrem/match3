@@ -29,7 +29,7 @@ package mygame
 		{
 			if (verbose)	trace(this + "Pawn(" + arguments);
 			
-			this.index = _index;
+			this.setIndex(_index);
 			this.type = Random.getInteger(0, 4);
 			
 			this.drawGem();
@@ -58,7 +58,7 @@ package mygame
 			return _type;
 		}
 		
-		public function set index(value:int):void 
+		public function setIndex(value:int):void 
 		{
 			_index = value;
 			this.updateDebug();

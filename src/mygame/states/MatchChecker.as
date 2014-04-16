@@ -11,8 +11,8 @@ package mygame.states
 	{
 		public static var verbose:Boolean;
 		
-		public const NO_MATCHES:Signal = new Signal();
-		public const MATCHES:Signal = new Signal();
+		public const NO_MATCHES_FOUND:Signal = new Signal();
+		public const MATCHES_FOUND:Signal = new Signal();
 		
 		public function MatchChecker(board:Board) 
 		{
@@ -23,30 +23,46 @@ package mygame.states
 		{
 			if (verbose)	trace(this + "enter(" + arguments);
 			
-			if (verbose)	trace("matchables: "+this.board.matchablePawns);
+			if (verbose)	trace("matchables: " + this.board.matchablePawns);
+			
+			var mustDispatchMatches:Boolean;
+			
 			if (this.board.matchablePawns.length == 0)
 			{
 				if (verbose)	trace("no matches");
-				this.NO_MATCHES.dispatch();
+				this.NO_MATCHES_FOUND.dispatch();
 				return;
 			}
 			else
 			{
+				//	for each matchable pawn
 				for (var i:int = 0; i < this.board.matchablePawns.length;i++ )
 				{
 					var pawn:Pawn = this.board.matchablePawns[i];
-					//	if there's at least 1 match on both axis, we dispatch the match(es)
-					var matches:Vector.<Vector.<Pawn>> = this.getMatches(pawn);
-					if (matches.length)
+					//	if there's at least 1 match on both axis, we register it to dispatch the match(es) later
+					var onePawnMatches:Vector.<Vector.<Pawn>> = this.getMatches(pawn);
+					
+					if (verbose)	trace(pawn+":" + onePawnMatches);
+					
+					if (onePawnMatches.length)
 					{
-						this.electMatchesForDestruction(matches);
+						mustDispatchMatches = true;
+						
+						this.electMatchesForDestruction(onePawnMatches);
 						
 						if (verbose)	trace("matches");
-						this.MATCHES.dispatch(matches);
 					}
 				}
 				this.board.resetMatchablePawns();
-				this.NO_MATCHES.dispatch();
+				
+				if (mustDispatchMatches)
+				{
+					this.MATCHES_FOUND.dispatch();
+				}
+				else
+				{
+					this.NO_MATCHES_FOUND.dispatch();
+				}
 			}
 		}
 		
@@ -82,26 +98,35 @@ package mygame.states
 			
 			var match:Vector.<Pawn> = new <Pawn>[];
 			match.push(pawn);
+			
 			var l:Pawn = this.board.getLeftPawn(pawn);
+			//if(verbose)	trace("l:"+l);
+			
 			if (l && l.type == pawn.type)
 			{
 				match.push(l);
+				
 				var ll:Pawn = this.board.getLeftPawn(l);
+				//if(verbose)	trace("ll:"+ll);
+				
 				if (ll && ll.type == pawn.type)
 				{
 					match.push(ll);
 				}
 			}
 			var r:Pawn = this.board.getRightPawn(pawn);
+			//if(verbose)	trace("r:" + r);
 			if (r && r.type == pawn.type)
 			{
 				match.push(r);
 				var rr:Pawn = this.board.getRightPawn(r);
+				//if(verbose)	trace("rr:" + rr);
 				if (rr && rr.type == pawn.type)
 				{
 					match.push(rr);
 				}
 			}
+			if (verbose)	trace("horizontal: " + match);
 			return match;
 		}
 		
@@ -132,6 +157,7 @@ package mygame.states
 					match.push(bb);
 				}
 			}
+			if (verbose)	trace("vertical: " + match);
 			return match;
 		}
 		
