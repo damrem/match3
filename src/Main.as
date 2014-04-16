@@ -77,6 +77,8 @@ package {
 			
 			this.starling.rootCreated.removeAll();
 			
+			
+			
 			//	lancement de Starling
             this.starling.start();
 		}

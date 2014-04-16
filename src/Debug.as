@@ -18,6 +18,7 @@ package
 		{
 			var classes:Vector.<Class> = new <Class>
 			[
+				Embeds,
 				Main,
 				Root,
 				GameScreen,

@@ -18,6 +18,8 @@ package mygame
 		
 		private var currentState:AbstractState;
 		
+		private var _board:Board;
+		
 		private var check:Check;
 		private var destroy:Destroy;
 		private var fall:FallAndFill;
@@ -28,9 +30,11 @@ package mygame
 		
 		private var timer:Timer;
 		
-		public function GameController(board:Board) 
+		public function GameController() 
 		{
 			if (verbose)	trace(this + "GameController(" + arguments);
+			
+			this._board = new Board();
 			
 			this.fall = new FallAndFill(board);
 			this.fall.BOARD_FILLED.add(this.gotoCheck);
@@ -105,6 +109,11 @@ package mygame
 			if (verbose)	trace(this + "gotoFall(" + arguments);
 			
 			this.setState(this.fall);
+		}
+		
+		public function get board():Board 
+		{
+			return _board;
 		}
 		
 	}

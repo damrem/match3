@@ -16,10 +16,11 @@ package mygame
 		{
 			if (verbose)	trace(this + "GameScreen(" + arguments);
 			
-			this.board = new Board();
-			this.addChild(this.board);
+			//	loading textures needs to be done AFTER starling setup
+			Embeds.init();
 			
-			this.controller = new GameController(this.board);
+			this.controller = new GameController();
+			this.addChild(this.controller.board);
 			this.controller.start();
 		}
 		

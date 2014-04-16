@@ -31,6 +31,17 @@ package mygame
 			
 			this.index = _index;
 			this.type = Random.getInteger(0, 4);
+			
+			this.drawGem();
+		}
+		
+		private function drawGem():void
+		{
+			this.addChild(new Image(Embeds.gemTextures[this.type]));
+		}
+		
+		private function drawQuad():void
+		{
 			this.addChild(new Quad(SIZE, SIZE, COLORS[this.type]));
 			
 			if (verbose)
