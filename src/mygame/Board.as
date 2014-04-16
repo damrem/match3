@@ -25,6 +25,11 @@ package mygame
 		public var holes:Vector.<int>;
 		
 		/**
+		 * Pawns to swap.
+		 */
+		public var swappablePawns:Vector.<Pawn>;
+		
+		/**
 		 * Pawns to check matches.
 		 */
 		public var matchablePawns:Vector.<Pawn>;
@@ -48,6 +53,7 @@ package mygame
 			
 			this.pawns = new <Pawn>[];
 			this.resetHoles();
+			this.resetSwappablePawns();
 			this.resetMatchablePawns();
 			this.resetFallablePawns();
 			this.resetDestroyablePawns();
@@ -221,6 +227,15 @@ package mygame
 			this.holes = new <int>[];
 		}
 		
+		public function resetSwappablePawns():void 
+		{
+			if (verbose)	trace(this + "resetSwappablePawns(" + arguments);
+			
+			this.swappablePawns = new <Pawn>[];
+		}
+		
+		
+		
 		public function resetMatchablePawns():void 
 		{
 			if (verbose)	trace(this + "resetMatchablePawns(" + arguments);
@@ -254,6 +269,14 @@ package mygame
 			if (verbose)	trace(this + "electPawnForMatching(" + arguments);
 			
 			this.matchablePawns.push(pawn);
+		}
+		
+		public function electPawnsForSwapping(pawn1:Pawn, pawn2:Pawn):void 
+		{
+			if (verbose)	trace(this + "electPawnForMatching(" + arguments);
+			
+			this.swappablePawns.push(pawn1);
+			this.swappablePawns.push(pawn2);
 		}
 		
 		

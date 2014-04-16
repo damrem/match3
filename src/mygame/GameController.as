@@ -41,7 +41,7 @@ package mygame
 			
 			
 			this.inputListener = new InputListener(board);
-			this.inputListener.SWAP_REQUESTED.add(this.gotoMatchChecker);
+			this.inputListener.SWAP_REQUESTED.add(this.gotoPawnSwapper);
 			
 			this.pawnSwapper = new PawnSwapper(board);
 			this.pawnSwapper.SWAPPED.add(this.gotoMatchChecker);

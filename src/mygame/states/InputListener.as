@@ -75,24 +75,26 @@ package mygame.states
 				if (touch && touch.phase == TouchPhase.ENDED)
 				{
 					var pawn:Pawn = touch.target.parent as Pawn;
-					/*
+					
 					if (selected)
 					{
-						SWAP_REQUESTED.dispatch(selected, pawn);
+						this.board.electPawnsForSwapping(pawn, selected);
+						SWAP_REQUESTED.dispatch();
 						selected = null;
 					}
 					else
 					{
 						selected = pawn;
 					}
-					*/
 					
+					/*
 					if (pawn)
 					{
 						if(verbose)	trace("touched "+pawn);
 						this.board.electPawnForMatching(pawn);
 						this.SWAP_REQUESTED.dispatch();
 					}
+					*/
 					
 						
 				}
