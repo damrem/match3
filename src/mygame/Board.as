@@ -11,8 +11,8 @@ package mygame
 	{
 		public static var verbose:Boolean;
 		
-		public static const WIDTH:int = 3;
-		public static const HEIGHT:int = 3;
+		public static const WIDTH:int = 4;
+		public static const HEIGHT:int = 4;
 		
 		/**
 		 * Pawns on the board.
@@ -28,27 +28,22 @@ package mygame
 		 * Pawns about to be destroyed.
 		 */
 		public var destroyablePawns:Vector.<Pawn>;
-		/**
-		 * Pawns currently being destroyed.
-		 */
-		public var destroyingPawns:Vector.<Pawn>;
 		
 		/**
 		 * Pawns about to start moving.
 		 */
-		public var movablePawns:Vector.<Pawn>;
-		/**
-		 * Pawns currently moving.
-		 */
-		public var movingPawns:Vector.<Pawn>;
+		public var fallablePawns:Vector.<Pawn>;
 		
 		
 		public function Board() 
 		{
 			if (verbose)	trace(this + "Board(" + arguments);
 			
+			this.y = 135;
+			
 			this.pawns = new <Pawn>[];
 			this.resetHoles();
+			this.resetFallablePawns();
 			this.resetDestroyablePawns();
 			
 			this.fill();
@@ -91,13 +86,34 @@ package mygame
 			return this.pawns[refPawn.index - WIDTH];
 		}
 		
-		public function getAbovePawnByIndex(holeIndex:int):Pawn 
+		/** 
+		 * @param	holeIndex
+		 * @return	the pawn which is supposed to fall into the hole; null if there is none.
+		 */
+		public function getPawnAboveHole(holeIndex:int):Pawn 
 		{
+			var pawnAboveHole:Pawn;
+			
+			//	if we're checking a hole on the top row, there's no pawn above
 			if (holeIndex < WIDTH)
 			{
 				return null;
 			}
-			return this.pawns[holeIndex - WIDTH];
+			
+			while (holeIndex >= WIDTH)
+			{
+				pawnAboveHole = this.pawns[holeIndex - WIDTH];
+				if (pawnAboveHole)
+				{
+					return pawnAboveHole;
+				}
+				else
+				{
+					holeIndex -= WIDTH;
+				}
+			}
+			//	ultimately, we did not find any pawn above
+			return null;
 		}
 		
 		public function getBottomPawn(refPawn:Pawn):Pawn
@@ -165,15 +181,15 @@ package mygame
 		 * @param	pawn
 		 * @param	destIndex
 		 */
-		public function startMovingPawn(pawn:Pawn, destIndex:int):void 
+		public function electPawnForFalling(pawn:Pawn, destIndex:int):void 
 		{
-			if (verbose)	trace(this + "positionPawn(" + arguments);
+			if (verbose)	trace(this + "electPawnForFalling(" + arguments);
 			
 			//	sets the new index
 			this.setPawnIndex(pawn, destIndex);
 			
 			//	elects the pawn for tween movement (handled by the PawnMover class)
-			this.movablePawns.push(pawn);
+			this.fallablePawns.push(pawn);
 		}
 		
 		/**
@@ -183,6 +199,8 @@ package mygame
 		 */
 		public function setPawnIndex(pawn:Pawn, destIndex:int):void
 		{
+			if (verbose)	trace(this + "setPawnIndex(" + arguments);
+			
 			this.pawns[pawn.index] = null;
 			this.pawns[destIndex] = pawn;
 			pawn.index = destIndex;
@@ -193,22 +211,16 @@ package mygame
 		 */
 		public function resetHoles():void
 		{
+			if (verbose)	trace(this + "resetHoles(" + arguments);
+			
 			this.holes = new <int>[];
 		}
 		
-		public function startDestroyingPawn(pawn:Pawn):void
+		public function resetFallablePawns():void 
 		{
-			if (verbose)	trace(this + "startDestroyingPawn(" + arguments);
+			if (verbose)	trace(this + "resetFallablePawns(" + arguments);
 			
-			this.destroyablePawns.push(pawn);
-		}
-		
-		public function endDestroyingPawn(pawn:Pawn):void
-		{
-			if (verbose)	trace(this + "endDestroyingPawn(" + arguments);
-			
-			this.pawns[pawn.index] = null;
-			this.holes.push(pawn.index);
+			this.fallablePawns = new <Pawn>[];
 		}
 		
 		public function resetDestroyablePawns():void 
@@ -218,7 +230,12 @@ package mygame
 			this.destroyablePawns = new <Pawn>[];
 		}
 		
-		
+		public function electPawnForDestruction(pawn:Pawn):void
+		{
+			if (verbose)	trace(this + "electPawnForDestruction(" + arguments);
+			
+			this.destroyablePawns.push(pawn);
+		}
 		
 		
 		

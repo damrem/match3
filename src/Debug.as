@@ -4,7 +4,7 @@ package
 	import mygame.GameController;
 	import mygame.GameScreen;
 	import mygame.Pawn;
-	import mygame.states.Fall;
+	import mygame.states.FallAndFill;
 	import mygame.states.Input;
 	import mygame.states.Destroy;
 	import utils.getSimpleToString;
@@ -27,7 +27,7 @@ package
 				Board, 
 				Pawn,
 				Assets,
-				Fall
+				FallAndFill
 			];
 			
 			for each(var classToDebug:Class in classes)

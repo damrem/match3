@@ -32,7 +32,10 @@ package mygame.states
 			for (var i:int = 0; i < this.board.pawns.length; i++ )
 			{
 				var pawn:Pawn = this.board.pawns[i];
-				pawn.addEventListener(TouchEvent.TOUCH, this.onTouch);
+				if (pawn)	//	TODO this tweak is temporar for the time without refilling the board
+				{
+					pawn.addEventListener(TouchEvent.TOUCH, this.onTouch);
+				}
 			}
 		}
 		
@@ -44,6 +47,15 @@ package mygame.states
 		override public function exit():void
 		{
 			if (verbose)	trace(this + "exit(" + arguments);
+			
+			for (var i:int = 0; i < this.board.pawns.length; i++ )
+			{
+				var pawn:Pawn = this.board.pawns[i];
+				if (pawn)	//	TODO this tweak is temporar for the time without refilling the board
+				{
+					pawn.removeEventListener(TouchEvent.TOUCH, this.onTouch);
+				}
+			}
 			
 		}
 		
@@ -57,16 +69,17 @@ package mygame.states
 			{
 				if (verbose)
 				{
-					//trace(event.data);
-					var pawn:Pawn = touch.target as Pawn;
-					if (pawn)
-					{
-						if(verbose)	trace("touched "+pawn);
-						this.board.startDestroyingPawn(pawn);
-						this.INPUT.dispatch();
-					}
-					
+					trace(event.data);
+					trace(touch.target.parent);
 				}
+				var pawn:Pawn = touch.target.parent as Pawn;
+				if (pawn)
+				{
+					if(verbose)	trace("touched "+pawn);
+					this.board.electPawnForDestruction(pawn);
+					this.INPUT.dispatch();
+				}
+					
 			}
 		}
 		

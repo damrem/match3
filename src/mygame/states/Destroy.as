@@ -31,19 +31,6 @@ package mygame.states
 			{
 				this.startDestroyingPawn(this.board.destroyablePawns[i]);
 			}
-			//this.board.resetDestroyablePawns();
-			/*
-			var emptyIndexes:Vector.<int> = new <int>[];
-			for (var i:int = 0; i < this.board.destroyablePawns.length; i++)
-			{
-				var pawn:Pawn = this.board.destroyablePawns[i];
-				emptyIndexes.push(pawn.index);
-				pawn.destroy();
-				this.board.pawns[pawn.index] = null;
-			}
-			this.board.destroyablePawns = new <Pawn>[];
-			this.DESTROYED.dispatch();
-			*/
 		}
 		
 		private function startDestroyingPawn(pawn:Pawn):void
@@ -58,6 +45,13 @@ package mygame.states
 		}
 		
 		
+		
+		
+		
+		
+		
+		
+		
 		/**
 		 * Check that all destruction tweens are complete.
 		 * @param	pawn
@@ -67,13 +61,26 @@ package mygame.states
 			if (verbose)	trace(this + "onPawnDestructionComplete(" + arguments);
 			
 			this.nbCompleted ++;
+			
+			//	we register the hole
+			this.endDestroyingPawn(pawn);
+
 			if (verbose)	trace("completed: " + this.nbCompleted+"/"+this.board.destroyablePawns.length);
+
 			if (this.nbCompleted == this.board.destroyablePawns.length)
 			{
 				this.board.resetDestroyablePawns();
 				this.nbCompleted = 0;
 				this.ALL_ARE_DESTROYED.dispatch();
 			}
+		}
+		
+		private function endDestroyingPawn(pawn:Pawn):void
+		{
+			if (verbose)	trace(this + "endDestroyingPawn(" + arguments);
+			
+			this.board.pawns[pawn.index] = null;
+			this.board.holes.push(pawn.index);
 		}
 		
 		override public function update():void

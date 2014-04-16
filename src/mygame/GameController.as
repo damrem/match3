@@ -5,7 +5,7 @@ package mygame
 	import mygame.states.AbstractState;
 	import mygame.states.Check;
 	import mygame.states.Destroy;
-	import mygame.states.Fall;
+	import mygame.states.FallAndFill;
 	import mygame.states.Input;
 	import mygame.states.Swap;
 	/**
@@ -20,9 +20,11 @@ package mygame
 		
 		private var check:Check;
 		private var destroy:Destroy;
-		private var fall:Fall;
+		private var fall:FallAndFill;
 		private var input:Input;
 		private var swap:Swap;
+		
+		private var pawnMover:PawnMover;
 		
 		private var timer:Timer;
 		
@@ -30,8 +32,9 @@ package mygame
 		{
 			if (verbose)	trace(this + "GameController(" + arguments);
 			
-			this.fall = new Fall(board);
+			this.fall = new FallAndFill(board);
 			this.fall.BOARD_FILLED.add(this.gotoCheck);
+			this.fall.ALL_HAVE_LANDED.add(this.gotoInput);
 			//this.fall.LANDED.add(this.gotoFall);
 			
 			this.check = new Check(board);
@@ -44,6 +47,8 @@ package mygame
 			
 			this.swap = new Swap(board);
 			
+			this.pawnMover = new PawnMover(board);
+			
 			this.timer = new Timer(1000 / 60);
 			this.timer.addEventListener(TimerEvent.TIMER, this.update);
 		}
@@ -52,7 +57,7 @@ package mygame
 		{
 			if (verbose)	trace(this + "start(" + arguments);
 			
-			this.setState(this.input);
+			this.gotoInput();
 			this.timer.start();
 		}
 		
@@ -71,6 +76,14 @@ package mygame
 		private function update(event:TimerEvent):void
 		{
 			this.currentState.update();
+			//this.pawnMover.update();
+		}
+		
+		private function gotoInput():void
+		{
+			if (verbose)	trace(this + "gotoInput(" + arguments);
+			
+			this.setState(this.input);
 		}
 		
 		private function gotoCheck():void
