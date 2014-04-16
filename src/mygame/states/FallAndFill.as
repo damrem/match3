@@ -32,7 +32,7 @@ package mygame.states
 			if (verbose)	trace(this + "enter(" + arguments);
 			
 			this.collapse();
-			//this.refill();
+			this.refill();
 			this.board.resetHoles();
 			
 			//	for each pawn which has to fall, we start the animation
@@ -71,6 +71,21 @@ package mygame.states
 			if (nbCollapsed > 0)
 			{
 				this.collapse();
+			}
+		}
+		
+		private function refill():void
+		{
+			//	for each hole, we generate a pawn above the column
+			for (var i:int = 0; i < this.board.holes.length; i++)
+			{
+				var hole:int = this.board.holes[i];
+				var pawn:Pawn = new Pawn(hole);
+				//this.board.pawns[i] = pawn;
+				pawn.x = this.board.indexToXY(hole).x;
+				pawn.y = - Pawn.SIZE;
+				this.board.addChild(pawn);
+				this.board.electPawnForFalling(pawn, hole);
 			}
 		}
 		
