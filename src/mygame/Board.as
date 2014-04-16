@@ -11,8 +11,8 @@ package mygame
 	{
 		public static var verbose:Boolean;
 		
-		public static const WIDTH:int = 8;
-		public static const HEIGHT:int = 8;
+		public static const WIDTH:int = 4;
+		public static const HEIGHT:int = 4;
 		
 		/**
 		 * Pawns on the board.
@@ -198,7 +198,7 @@ package mygame
 			if (verbose)	trace(this + "electPawnForFalling(" + arguments);
 			
 			//	sets the new index
-			this.setPawnIndex(pawn, destIndex);
+			this.setPawnIndex(pawn, destIndex, true);
 			
 			//	elects the pawn for tween movement (handled by the PawnMover class)
 			this.fallablePawns.push(pawn);
@@ -209,11 +209,11 @@ package mygame
 		 * @param	pawn
 		 * @param	destIndex
 		 */
-		public function setPawnIndex(pawn:Pawn, destIndex:int):void
+		public function setPawnIndex(pawn:Pawn, destIndex:int, emptyPrevIndex:Boolean):void
 		{
 			if (verbose)	trace(this + "setPawnIndex(" + arguments);
 			
-			this.pawns[pawn.index] = null;
+			if(emptyPrevIndex)	this.pawns[pawn.index] = null;
 			this.pawns[destIndex] = pawn;
 			pawn.setIndex(destIndex);
 		}

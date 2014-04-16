@@ -181,7 +181,7 @@ package mygame.states
 		override public function exit():void
 		{
 			if (verbose)	trace(this + "exit(" + arguments);
-			
+			if (verbose)	trace(this.board.pawns);
 		}
 	}
 

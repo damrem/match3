@@ -33,14 +33,17 @@ package mygame.states
 			for (var i:int = 0; i < this.board.pawns.length; i++ )
 			{
 				var pawn:Pawn = this.board.pawns[i];
-				if (pawn)	//	TODO this tweak is temporar for the time without refilling the board
+				try	//if (pawn)	//	TODO this tweak is temporar for the time without refilling the board
 				{
 					pawn.alpha = 1.0;
-					//this.isActive = true;
 					pawn.addEventListener(TouchEvent.TOUCH, this.onTouch);
 				}
+				catch (e:Error)
+				{
+					trace(i);
+				}
+				
 			}
-			//this.firstTime = false;
 		}
 		
 		override public function update():void
@@ -55,13 +58,19 @@ package mygame.states
 			for (var i:int = 0; i < this.board.pawns.length; i++ )
 			{
 				var pawn:Pawn = this.board.pawns[i];
-				if (pawn)	//	TODO this tweak is temporar for the time without refilling the board
+				try //if (pawn)	//	TODO this tweak is temporar for the time without refilling the board
 				{
 					pawn.alpha = 0.5;
 					//this.isActive = false;
 					pawn.removeEventListener(TouchEvent.TOUCH, this.onTouch);
 				}
+				catch (e:Error)
+				{
+					trace(i);
+				}
 			}
+			
+			if (verbose)	trace(this.board.pawns);
 			
 		}
 		

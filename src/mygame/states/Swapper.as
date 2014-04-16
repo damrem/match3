@@ -10,28 +10,34 @@ package mygame.states
 	 * ...
 	 * @author damrem
 	 */
-	public class PawnSwapper extends AbstractState
+	public class Swapper extends AbstractState
 	{
+		private var nbSwaps:int;
 		public static var verbose:Boolean;
 		
 		public const SWAPPED:Signal = new Signal();
 		public const UNSWAPPED:Signal = new Signal();
 		
-		public function PawnSwapper(board:Board) 
+		public function Swapper(board:Board) 
 		{
 			super(board);
 		}
 		
 		override public function enter():void
 		{
+			if (verbose)	trace(this + "enter(" + arguments);
+			
 			var pawn1:Pawn = this.board.swappablePawns[0];
 			var pawn2:Pawn = this.board.swappablePawns[1];
 			
 			//	we swap the indexes of the 2 pawns on the board
 			var index1:int = pawn1.index;
 			
-			this.board.setPawnIndex(pawn1, pawn2.index);
-			this.board.setPawnIndex(pawn2, index1);
+			if (verbose)	trace(this.board.pawns);	//ok
+			this.board.setPawnIndex(pawn1, pawn2.index, false);
+			if (verbose)	trace(this.board.pawns);	//ko
+			this.board.setPawnIndex(pawn2, index1, false);
+			if (verbose)	trace(this.board.pawns);	//ko
 			
 			this.board.electPawnForMatching(pawn1);
 			this.board.electPawnForMatching(pawn2);
@@ -56,7 +62,7 @@ package mygame.states
 			tween.moveTo(destXY.x, destXY.y);
 			
 			//	the tween callback only applies once
-			if (side)
+			//if (side)
 			{
 				tween.onComplete = this.onSwappingComplete;
 			}
@@ -68,7 +74,12 @@ package mygame.states
 		{
 			if (verbose)	trace(this + "onSwappingComplete(" + arguments);
 			
-			this.SWAPPED.dispatch();
+			this.nbSwaps++;
+			if (this.nbSwaps == 2)
+			{
+				this.nbSwaps = 0;
+				this.SWAPPED.dispatch();
+			}
 		}
 		
 		override public function update():void
@@ -78,7 +89,8 @@ package mygame.states
 		
 		override public function exit():void
 		{
-			
+			if (verbose)	trace(this + "exit(" + arguments);
+			if (verbose)	trace(this.board.pawns);
 		}
 	}
 

@@ -7,14 +7,14 @@ package mygame.states
 	 * ...
 	 * @author damrem
 	 */
-	public class MatchChecker extends AbstractState
+	public class Matcher extends AbstractState
 	{
 		public static var verbose:Boolean;
 		
 		public const NO_MATCHES_FOUND:Signal = new Signal();
 		public const MATCHES_FOUND:Signal = new Signal();
 		
-		public function MatchChecker(board:Board) 
+		public function Matcher(board:Board) 
 		{
 			super(board);
 		}
@@ -23,8 +23,9 @@ package mygame.states
 		{
 			if (verbose)	trace(this + "enter(" + arguments);
 			
-			if (verbose)	trace("matchables: " + this.board.matchablePawns);
+			//if (verbose)	trace("matchables: " + this.board.matchablePawns);
 			
+			//	we will dispatch only if any of the matchable pawns is part of a match
 			var mustDispatchMatches:Boolean;
 			
 			if (this.board.matchablePawns.length == 0)
@@ -50,7 +51,7 @@ package mygame.states
 						
 						this.electMatchesForDestruction(onePawnMatches);
 						
-						if (verbose)	trace("matches");
+						//if (verbose)	trace("matches");
 					}
 				}
 				this.board.resetMatchablePawns();
@@ -188,7 +189,8 @@ package mygame.states
 		
 		override public function exit():void
 		{
-			
+			if (verbose)	trace(this + "exit(" + arguments);
+			if (verbose)	trace(this.board.pawns);
 		}
 	}
 

@@ -9,7 +9,7 @@ package mygame.states
 	 * ...
 	 * @author damrem
 	 */
-	public class PawnDestroyer extends AbstractState
+	public class Destroyer extends AbstractState
 	{
 		public static var verbose:Boolean;
 		
@@ -18,7 +18,7 @@ package mygame.states
 		private var nbCompleted:int = 0;
 		public const ALL_ARE_DESTROYED:Signal = new Signal();
 
-		public function PawnDestroyer(board:Board) 
+		public function Destroyer(board:Board) 
 		{
 			super(board);
 		}
@@ -96,7 +96,7 @@ package mygame.states
 		override public function exit():void
 		{
 			if (verbose)	trace(this + "exit(" + arguments);
-			
+			if (verbose)	trace(this.board.pawns);
 		}
 	}
 
