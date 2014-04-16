@@ -25,8 +25,21 @@ package mygame.states
 		{
 			if (verbose)	trace(this + "enter(" + arguments);
 			
+			//	for each hole in the board, we take the pawn just above (if there's one), and we start moving it to this hole.
+			if (verbose)	trace("holes: "+this.board.holes);
+			for (var i:int = 0; i < this.board.holes.length; i++)
+			{
+				var holeIndex:int = this.board.holes[i];
+				var abovePawn:Pawn = this.board.getAbovePawnByIndex(holeIndex);
+				if (abovePawn)
+				{
+					this.board.startMovingPawn(abovePawn, holeIndex);
+				}
+			}
+			
 			//for each pawn, ascending
-			for (var i:int = 0; i <this.board.pawns.length - Board.WIDTH; i++)
+			/*
+			for (var i:int = this.board.pawns.length - Board.WIDTH - 1; i >=0; i--)
 			{
 				var pawn:Pawn = this.board.pawns[i];
 				if (pawn && !this.board.getBottomPawn(pawn))
@@ -38,11 +51,12 @@ package mygame.states
 					this.board.movePawnTo(pawn, bottomIndex, onFallMoveComplete, [pawn, bottomIndex]);
 				}
 			}
+			*/
 		}
 		
 		private function onFallMoveComplete(pawn:Pawn, destinationIndex:int):void
 		{
-			this.board.positionPawn(pawn, destinationIndex);
+			this.board.startMovingPawn(pawn, destinationIndex);
 			//this.LANDED.dispatch();
 		}
 		

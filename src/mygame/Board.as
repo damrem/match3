@@ -45,9 +45,12 @@ package mygame
 		
 		public function Board() 
 		{
-			if(verbose)	trace(this + "Board(" + arguments);
+			if (verbose)	trace(this + "Board(" + arguments);
+			
 			this.pawns = new <Pawn>[];
-			this.destroyablePawns = new <Pawn>[];
+			this.resetHoles();
+			this.resetDestroyablePawns();
+			
 			this.fill();
 		}
 		
@@ -79,13 +82,22 @@ package mygame
 			return true;
 		}
 		
-		public function getUpperPawn(refPawn:Pawn):Pawn
+		public function getAbovePawnByPawn(refPawn:Pawn):Pawn
 		{
 			if (refPawn.index < WIDTH)
 			{
 				return null;
 			}
 			return this.pawns[refPawn.index - WIDTH];
+		}
+		
+		public function getAbovePawnByIndex(holeIndex:int):Pawn 
+		{
+			if (holeIndex < WIDTH)
+			{
+				return null;
+			}
+			return this.pawns[holeIndex - WIDTH];
 		}
 		
 		public function getBottomPawn(refPawn:Pawn):Pawn
@@ -122,13 +134,6 @@ package mygame
 			return this.pawns[refPawn.index + 1];
 		}
 		
-		public function movePawnTo(movingPawn:Pawn, index:int, onComplete:Function = null, onCompleteArgs:Array = null):void
-		{
-			if (verbose)	trace(this + "movePawnTo(" + arguments);
-			
-			movingPawn.moveTo(this.indexToXY(index), onComplete, onCompleteArgs);
-		}
-		
 		public function indexToCol(index:int):int
 		{
 			return index % WIDTH;
@@ -155,19 +160,65 @@ package mygame
 			return new Point(colToX(indexToCol(index)), rowToY(indexToRow(index)));
 		}
 		
-		public function positionPawn(pawn:Pawn, destinationIndex:int):void 
+		/**
+		 * Elects the pawn for tween movement by setting its new index and registering the pawn as movable.
+		 * @param	pawn
+		 * @param	destIndex
+		 */
+		public function startMovingPawn(pawn:Pawn, destIndex:int):void 
 		{
 			if (verbose)	trace(this + "positionPawn(" + arguments);
 			
-			var originIndex:int = pawn.index;
-			/*
-			this.pawns[destinationIndex].sleep();
-			this.pawns[destinationIndex] = pawn;
-			pawn.index = destinationIndex;
+			//	sets the new index
+			this.setPawnIndex(pawn, destIndex);
 			
-			this.pawns[originIndex] = null;
-			*/
+			//	elects the pawn for tween movement (handled by the PawnMover class)
+			this.movablePawns.push(pawn);
 		}
+		
+		/**
+		 * Remove the pawn from its origin index and put it in the destination index.
+		 * @param	pawn
+		 * @param	destIndex
+		 */
+		public function setPawnIndex(pawn:Pawn, destIndex:int):void
+		{
+			this.pawns[pawn.index] = null;
+			this.pawns[destIndex] = pawn;
+			pawn.index = destIndex;
+		}
+		
+		/**
+		 * Empty the holes structure. Called when all the holes have been handled by Fall.
+		 */
+		public function resetHoles():void
+		{
+			this.holes = new <int>[];
+		}
+		
+		public function startDestroyingPawn(pawn:Pawn):void
+		{
+			if (verbose)	trace(this + "startDestroyingPawn(" + arguments);
+			
+			this.destroyablePawns.push(pawn);
+		}
+		
+		public function endDestroyingPawn(pawn:Pawn):void
+		{
+			if (verbose)	trace(this + "endDestroyingPawn(" + arguments);
+			
+			this.pawns[pawn.index] = null;
+			this.holes.push(pawn.index);
+		}
+		
+		public function resetDestroyablePawns():void 
+		{
+			if (verbose)	trace(this + "resetDestroyablePawns(" + arguments);
+			
+			this.destroyablePawns = new <Pawn>[];
+		}
+		
+		
 		
 		
 		

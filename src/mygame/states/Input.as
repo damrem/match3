@@ -61,7 +61,8 @@ package mygame.states
 					var pawn:Pawn = touch.target as Pawn;
 					if (pawn)
 					{
-						this.board.destroyablePawns.push(pawn);
+						if(verbose)	trace("touched "+pawn);
+						this.board.startDestroyingPawn(pawn);
 						this.INPUT.dispatch();
 					}
 					

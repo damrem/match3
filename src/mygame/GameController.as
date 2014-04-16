@@ -40,7 +40,7 @@ package mygame
 			this.input.INPUT.add(this.gotoDestroy);
 			
 			this.destroy = new Destroy(board);
-			this.destroy.DESTROYED.add(this.gotoFall);
+			this.destroy.ALL_ARE_DESTROYED.add(this.gotoFall);
 			
 			this.swap = new Swap(board);
 			
