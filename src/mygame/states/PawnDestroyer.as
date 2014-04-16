@@ -9,7 +9,7 @@ package mygame.states
 	 * ...
 	 * @author damrem
 	 */
-	public class Destroy extends AbstractState
+	public class PawnDestroyer extends AbstractState
 	{
 		public static var verbose:Boolean;
 		
@@ -18,7 +18,7 @@ package mygame.states
 		private var nbCompleted:int = 0;
 		public const ALL_ARE_DESTROYED:Signal = new Signal();
 
-		public function Destroy(board:Board) 
+		public function PawnDestroyer(board:Board) 
 		{
 			super(board);
 		}
@@ -29,7 +29,10 @@ package mygame.states
 			
 			for (var i:int = 0; i < this.board.destroyablePawns.length; i++)
 			{
-				this.startDestroyingPawn(this.board.destroyablePawns[i]);
+				if (this.board.destroyablePawns[i])	//	this test prevents from destroying a pawn who would be in 2 matches (horizontal & vertical)
+				{
+					this.startDestroyingPawn(this.board.destroyablePawns[i]);
+				}
 			}
 		}
 		

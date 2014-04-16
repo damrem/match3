@@ -12,15 +12,14 @@ package mygame.states
 	 * ...
 	 * @author damrem
 	 */
-	public class Input extends AbstractState
+	public class InputListener extends AbstractState
 	{
 		public static var verbose:Boolean;
 		
-		public const INPUT:Signal = new Signal();
+		public const SWAP_REQUESTED:Signal = new Signal();
+		private var selected:Pawn;
 		
-		private var isActive:Boolean;
-		
-		public function Input(board:Board) 
+		public function InputListener(board:Board) 
 		{
 			if (verbose)	trace(this + "Input(" + arguments);
 			
@@ -75,22 +74,32 @@ package mygame.states
 				var touch:Touch = event.getTouch(this.board.stage);
 				if (touch && touch.phase == TouchPhase.ENDED)
 				{
-					if (verbose)
-					{
-						trace(event.data);
-						trace(touch.target.parent);
-					}
 					var pawn:Pawn = touch.target.parent as Pawn;
+					/*
+					if (selected)
+					{
+						SWAP_REQUESTED.dispatch(selected, pawn);
+						selected = null;
+					}
+					else
+					{
+						selected = pawn;
+					}
+					*/
+					
 					if (pawn)
 					{
 						if(verbose)	trace("touched "+pawn);
-						this.board.electPawnForDestruction(pawn);
-						this.INPUT.dispatch();
+						this.board.electPawnForMatching(pawn);
+						this.SWAP_REQUESTED.dispatch();
 					}
+					
 						
 				}
 			}
 		}
+		
+		
 		
 		
 	}

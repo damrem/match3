@@ -3,11 +3,11 @@ package mygame
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	import mygame.states.AbstractState;
-	import mygame.states.Check;
-	import mygame.states.Destroy;
+	import mygame.states.MatchChecker;
+	import mygame.states.PawnDestroyer;
 	import mygame.states.FallAndFill;
-	import mygame.states.Input;
-	import mygame.states.Swap;
+	import mygame.states.InputListener;
+	import mygame.states.PawnSwapper;
 	/**
 	 * ...
 	 * @author damrem
@@ -20,13 +20,11 @@ package mygame
 		
 		private var _board:Board;
 		
-		private var check:Check;
-		private var destroy:Destroy;
-		private var fall:FallAndFill;
-		private var input:Input;
-		private var swap:Swap;
-		
-		private var pawnMover:PawnMover;
+		private var matchChecker:MatchChecker;
+		private var pawnDestroyer:PawnDestroyer;
+		private var fillAndFall:FallAndFill;
+		private var inputListener:InputListener;
+		private var pawnSwapper:PawnSwapper;
 		
 		private var timer:Timer;
 		
@@ -36,22 +34,25 @@ package mygame
 			
 			this._board = new Board();
 			
-			this.fall = new FallAndFill(board);
-			this.fall.BOARD_FILLED.add(this.gotoCheck);
-			this.fall.ALL_HAVE_LANDED.add(this.gotoInput);
+			this.fillAndFall = new FallAndFill(board);
+			this.fillAndFall.BOARD_FILLED.add(this.gotoMatchChecker);
+			this.fillAndFall.ALL_HAVE_LANDED.add(this.gotoInputListener);
 			//this.fall.LANDED.add(this.gotoFall);
 			
-			this.check = new Check(board);
 			
-			this.input = new Input(board);
-			this.input.INPUT.add(this.gotoDestroy);
+			this.inputListener = new InputListener(board);
+			this.inputListener.SWAP_REQUESTED.add(this.gotoMatchChecker);
 			
-			this.destroy = new Destroy(board);
-			this.destroy.ALL_ARE_DESTROYED.add(this.gotoFall);
+			this.pawnSwapper = new PawnSwapper(board);
+			this.pawnSwapper.SWAPPED.add(this.gotoMatchChecker);
+			this.pawnSwapper.UNSWAPPED.add(this.gotoInputListener);
+
+			this.matchChecker = new MatchChecker(board);
+			this.matchChecker.MATCHES.add(this.gotoPawnDestroyer);
+			this.matchChecker.NO_MATCHES.add(this.gotoInputListener);
 			
-			this.swap = new Swap(board);
-			
-			this.pawnMover = new PawnMover(board);
+			this.pawnDestroyer = new PawnDestroyer(board);
+			this.pawnDestroyer.ALL_ARE_DESTROYED.add(this.gotoFillAndFall);
 			
 			this.timer = new Timer(1000 / 60);
 			this.timer.addEventListener(TimerEvent.TIMER, this.update);
@@ -61,7 +62,7 @@ package mygame
 		{
 			if (verbose)	trace(this + "start(" + arguments);
 			
-			this.gotoInput();
+			this.gotoInputListener();
 			this.timer.start();
 		}
 		
@@ -83,32 +84,39 @@ package mygame
 			//this.pawnMover.update();
 		}
 		
-		private function gotoInput():void
+		private function gotoInputListener():void
 		{
-			if (verbose)	trace(this + "gotoInput(" + arguments);
+			if (verbose)	trace(this + "gotoInputListener(" + arguments);
 			
-			this.setState(this.input);
+			this.setState(this.inputListener);
 		}
 		
-		private function gotoCheck():void
+		private function gotoPawnSwapper():void 
 		{
-			if (verbose)	trace(this + "gotoCheck(" + arguments);
+			if (verbose)	trace(this + "gotoPawnSwapper(" + arguments);
 			
-			this.setState(this.check);
+			this.setState(this.pawnSwapper);
 		}
 		
-		private function gotoDestroy():void 
+		private function gotoMatchChecker():void
 		{
-			if (verbose)	trace(this + "gotoDestroy(" + arguments);
+			if (verbose)	trace(this + "gotoMatchChecker(" + arguments);
 			
-			this.setState(this.destroy);
+			this.setState(this.matchChecker);
 		}
 		
-		private function gotoFall():void 
+		private function gotoPawnDestroyer():void 
 		{
-			if (verbose)	trace(this + "gotoFall(" + arguments);
+			if (verbose)	trace(this + "gotoPawnDestroyer(" + arguments);
 			
-			this.setState(this.fall);
+			this.setState(this.pawnDestroyer);
+		}
+		
+		private function gotoFillAndFall():void 
+		{
+			if (verbose)	trace(this + "gotoFillAndFall(" + arguments);
+			
+			this.setState(this.fillAndFall);
 		}
 		
 		public function get board():Board 

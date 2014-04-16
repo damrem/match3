@@ -11,8 +11,8 @@ package mygame
 	{
 		public static var verbose:Boolean;
 		
-		public static const WIDTH:int = 3;
-		public static const HEIGHT:int = 9;
+		public static const WIDTH:int = 8;
+		public static const HEIGHT:int = 8;
 		
 		/**
 		 * Pawns on the board.
@@ -23,6 +23,11 @@ package mygame
 		 * List of the empty indexes on the board.
 		 */
 		public var holes:Vector.<int>;
+		
+		/**
+		 * Pawns to check matches.
+		 */
+		public var matchablePawns:Vector.<Pawn>;
 		
 		/**
 		 * Pawns about to be destroyed.
@@ -43,6 +48,7 @@ package mygame
 			
 			this.pawns = new <Pawn>[];
 			this.resetHoles();
+			this.resetMatchablePawns();
 			this.resetFallablePawns();
 			this.resetDestroyablePawns();
 			
@@ -78,7 +84,7 @@ package mygame
 			return true;
 		}
 		
-		public function getAbovePawnByPawn(refPawn:Pawn):Pawn
+		public function getTopPawn(refPawn:Pawn):Pawn
 		{
 			if (refPawn.index < WIDTH)
 			{
@@ -119,8 +125,6 @@ package mygame
 		
 		public function getBottomPawn(refPawn:Pawn):Pawn
 		{
-			if (verbose)	trace(this + "getLowerPawn(" + arguments);
-			
 			if (refPawn.index >= (HEIGHT - 1) * WIDTH)
 			{
 				return null;
@@ -156,7 +160,7 @@ package mygame
 			return index % WIDTH;
 		}
 		
-		public function indexToRow(index:int):int
+		public function getRowFromIndex(index:int):int
 		{
 			var row:int = index / WIDTH;
 			return row;
@@ -174,7 +178,7 @@ package mygame
 		
 		public function indexToXY(index:int):Point
 		{
-			return new Point(colToX(indexToCol(index)), rowToY(indexToRow(index)));
+			return new Point(colToX(indexToCol(index)), rowToY(getRowFromIndex(index)));
 		}
 		
 		/**
@@ -217,6 +221,13 @@ package mygame
 			this.holes = new <int>[];
 		}
 		
+		public function resetMatchablePawns():void 
+		{
+			if (verbose)	trace(this + "resetMatchablePawns(" + arguments);
+			
+			this.matchablePawns = new <Pawn>[];
+		}
+		
 		public function resetFallablePawns():void 
 		{
 			if (verbose)	trace(this + "resetFallablePawns(" + arguments);
@@ -236,6 +247,13 @@ package mygame
 			if (verbose)	trace(this + "electPawnForDestruction(" + arguments);
 			
 			this.destroyablePawns.push(pawn);
+		}
+		
+		public function electPawnForMatching(pawn:Pawn):void 
+		{
+			if (verbose)	trace(this + "electPawnForMatching(" + arguments);
+			
+			this.matchablePawns.push(pawn);
 		}
 		
 		

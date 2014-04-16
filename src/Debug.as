@@ -5,9 +5,10 @@ package
 	import mygame.GameScreen;
 	import mygame.Pawn;
 	import mygame.states.FallAndFill;
-	import mygame.states.Input;
-	import mygame.states.Destroy;
+	import mygame.states.InputListener;
+	import mygame.states.PawnDestroyer;
 	import utils.getSimpleToString;
+	import mygame.states.MatchChecker;
 	
 	/**
 	 * @author damrem
@@ -23,12 +24,13 @@ package
 				Root,
 				GameScreen,
 				GameController,
-				Input,
-				Destroy,
+				InputListener,
+				PawnDestroyer,
 				Board, 
 				Pawn,
 				Assets,
-				FallAndFill
+				FallAndFill,
+				MatchChecker
 			];
 			
 			for each(var classToDebug:Class in classes)

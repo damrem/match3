@@ -9,7 +9,6 @@ package mygame
 	{
 		public static var verbose:Boolean;
 		
-		private var board:Board;
 		private var controller:GameController;
 		
 		public function GameScreen() 
