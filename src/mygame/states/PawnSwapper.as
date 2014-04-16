@@ -55,11 +55,9 @@ package mygame.states
 			if (side)
 			{
 				tween.onComplete = this.onSwappingComplete;
-				//tween.onCompleteArgs = [pawn];
 			}
 			
 			Starling.juggler.add(tween);
-			//this.onFallingComplete(pawn);
 		}
 		
 		private function onSwappingComplete():void 

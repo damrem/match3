@@ -279,6 +279,11 @@ package mygame
 			this.swappablePawns.push(pawn2);
 		}
 		
+		public function arePawnsNeighbors(pawn1:Pawn, pawn2:Pawn):Boolean
+		{
+			return (pawn1 == this.getLeftPawn(pawn2) || pawn1 == this.getRightPawn(pawn2) || pawn1 == this.getTopPawn(pawn2) || pawn1 == this.getBottomPawn(pawn2))
+		}
+		
 		
 		
 	}

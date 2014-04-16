@@ -137,7 +137,6 @@ package mygame.states
 			tween.onCompleteArgs = [pawn];
 			
 			Starling.juggler.add(tween);
-			//this.onFallingComplete(pawn);
 		}
 		
 		private function onFallingComplete(pawn:Pawn):void 

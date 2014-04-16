@@ -76,15 +76,15 @@ package mygame.states
 				{
 					var pawn:Pawn = touch.target.parent as Pawn;
 					
-					if (selected)
+					if (this.selected && this.board.arePawnsNeighbors(pawn, this.selected) )
 					{
-						this.board.electPawnsForSwapping(pawn, selected);
+						this.board.electPawnsForSwapping(pawn, this.selected);
 						SWAP_REQUESTED.dispatch();
-						selected = null;
+						this.selected = null;
 					}
 					else
 					{
-						selected = pawn;
+						this.selected = pawn;
 					}
 					
 					/*
