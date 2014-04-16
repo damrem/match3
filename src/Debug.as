@@ -1,9 +1,13 @@
 package 
 {
+	import mygame.Board;
+	import mygame.GameController;
+	import mygame.GameScreen;
+	import mygame.Pawn;
+	import mygame.states.Fall;
+	import mygame.states.Input;
+	import mygame.states.Destroy;
 	import utils.getSimpleToString;
-	import thegame.GameScreen;
-	import thegame.Board;
-	import thegame.Gem;
 	
 	/**
 	 * @author damrem
@@ -17,9 +21,13 @@ package
 				Main,
 				Root,
 				GameScreen,
+				GameController,
+				Input,
+				Destroy,
 				Board, 
-				Gem,
-				Assets
+				Pawn,
+				Assets,
+				Fall
 			];
 			
 			for each(var classToDebug:Class in classes)
