@@ -11,8 +11,8 @@ package mygame
 	{
 		public static var verbose:Boolean;
 		
-		public static const WIDTH:int = 4;
-		public static const HEIGHT:int = 4;
+		public static const WIDTH:int = 3;
+		public static const HEIGHT:int = 9;
 		
 		/**
 		 * Pawns on the board.
@@ -39,7 +39,7 @@ package mygame
 		{
 			if (verbose)	trace(this + "Board(" + arguments);
 			
-			this.y = 135;
+			//this.y = 135;
 			
 			this.pawns = new <Pawn>[];
 			this.resetHoles();
@@ -57,7 +57,8 @@ package mygame
 			{
 				var pawn:Pawn = new Pawn(i);
 				pawn.x = (i % WIDTH) * Pawn.SIZE;
-				var row:int = i / HEIGHT;
+				var row:int = Math.floor(i / WIDTH);
+				if(verbose)	trace(row);
 				pawn.y = row * Pawn.SIZE;
 				this.pawns[i] = pawn;
 				this.addChild(pawn);

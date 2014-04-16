@@ -18,6 +18,8 @@ package mygame.states
 		
 		public const INPUT:Signal = new Signal();
 		
+		private var isActive:Boolean;
+		
 		public function Input(board:Board) 
 		{
 			if (verbose)	trace(this + "Input(" + arguments);
@@ -34,9 +36,12 @@ package mygame.states
 				var pawn:Pawn = this.board.pawns[i];
 				if (pawn)	//	TODO this tweak is temporar for the time without refilling the board
 				{
+					pawn.alpha = 1.0;
+					//this.isActive = true;
 					pawn.addEventListener(TouchEvent.TOUCH, this.onTouch);
 				}
 			}
+			//this.firstTime = false;
 		}
 		
 		override public function update():void
@@ -53,6 +58,8 @@ package mygame.states
 				var pawn:Pawn = this.board.pawns[i];
 				if (pawn)	//	TODO this tweak is temporar for the time without refilling the board
 				{
+					pawn.alpha = 0.5;
+					//this.isActive = false;
 					pawn.removeEventListener(TouchEvent.TOUCH, this.onTouch);
 				}
 			}
@@ -63,23 +70,25 @@ package mygame.states
 		{
 			//if (verbose)	trace(this + "onTouch(" + arguments);
 			//if (verbose)	trace(event.data);
-			
-			var touch:Touch = event.getTouch(this.board.stage);
-			if (touch && touch.phase == TouchPhase.ENDED)
+			//if (this.isActive)
 			{
-				if (verbose)
+				var touch:Touch = event.getTouch(this.board.stage);
+				if (touch && touch.phase == TouchPhase.ENDED)
 				{
-					trace(event.data);
-					trace(touch.target.parent);
+					if (verbose)
+					{
+						trace(event.data);
+						trace(touch.target.parent);
+					}
+					var pawn:Pawn = touch.target.parent as Pawn;
+					if (pawn)
+					{
+						if(verbose)	trace("touched "+pawn);
+						this.board.electPawnForDestruction(pawn);
+						this.INPUT.dispatch();
+					}
+						
 				}
-				var pawn:Pawn = touch.target.parent as Pawn;
-				if (pawn)
-				{
-					if(verbose)	trace("touched "+pawn);
-					this.board.electPawnForDestruction(pawn);
-					this.INPUT.dispatch();
-				}
-					
 			}
 		}
 		

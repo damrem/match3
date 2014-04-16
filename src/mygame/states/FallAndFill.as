@@ -53,7 +53,8 @@ package mygame.states
 			//	we check if there is a pawn who could fill it
 			if (verbose)	trace("holes:" + this.board.holes);
 			
-			for (var i:int = this.board.holes.length - 1; i >=0; i--)
+			//for (var i:int = this.board.holes.length - 1; i >=0; i--)
+			for (var i:int = 0; i < this.board.holes.length; i++)
 			{
 				var hole:int = this.board.holes[i];
 				
@@ -136,6 +137,7 @@ package mygame.states
 			tween.onCompleteArgs = [pawn];
 			
 			Starling.juggler.add(tween);
+			//this.onFallingComplete(pawn);
 		}
 		
 		private function onFallingComplete(pawn:Pawn):void 
@@ -151,6 +153,7 @@ package mygame.states
 				this.board.resetFallablePawns();
 				this.nbCompleted = 0;
 				this.ALL_HAVE_LANDED.dispatch();
+				Starling.juggler.purge();
 			}
 		}
 		

@@ -37,7 +37,7 @@ package mygame
 			{
 				this.debugTf = new TextField(SIZE, SIZE/2, "");
 				this.updateDebug();
-				this.addChild(this.debugTf);
+				//this.addChild(this.debugTf);
 			}
 			
 		}
