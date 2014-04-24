@@ -1,13 +1,13 @@
-package mygame 
+package thegame 
 {
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
-	import mygame.states.AbstractState;
-	import mygame.states.Matcher;
-	import mygame.states.Destroyer;
-	import mygame.states.FallAndFill;
-	import mygame.states.InputListener;
-	import mygame.states.Swapper;
+	import thegame.states.AbstractState;
+	import thegame.states.Matcher;
+	import thegame.states.Destroyer;
+	import thegame.states.FallAndFill;
+	import thegame.states.InputListener;
+	import thegame.states.Swapper;
 	/**
 	 * ...
 	 * @author damrem
@@ -35,8 +35,8 @@ package mygame
 			this._board = new Board();
 			
 			this.fillAndFall = new FallAndFill(board);
-			this.fillAndFall.BOARD_FILLED.add(this.gotoMatcher);
-			this.fillAndFall.ALL_HAVE_LANDED.add(this.gotoInputListener);
+			this.fillAndFall.FILLED.add(this.gotoMatcher);
+			//this.fillAndFall.ALL_HAVE_LANDED.add(this.gotoInputListener);
 			//this.fall.LANDED.add(this.gotoFall);
 			
 			

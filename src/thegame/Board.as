@@ -1,4 +1,4 @@
-package mygame 
+package thegame 
 {
 	import flash.geom.Point;
 	import starling.animation.Tween;
@@ -11,8 +11,8 @@ package mygame
 	{
 		public static var verbose:Boolean;
 		
-		public static const WIDTH:int = 4;
-		public static const HEIGHT:int = 4;
+		public static var WIDTH:int = 4;
+		public static var HEIGHT:int = 4;
 		
 		/**
 		 * Pawns on the board.
@@ -45,9 +45,12 @@ package mygame
 		public var fallablePawns:Vector.<Pawn>;
 		
 		
-		public function Board() 
+		public function Board(w:int=8, h:int=8) 
 		{
 			if (verbose)	trace(this + "Board(" + arguments);
+			
+			WIDTH = w;
+			HEIGHT = h;
 			
 			//this.y = 135;
 			
@@ -226,6 +229,7 @@ package mygame
 			if (verbose)	trace(this + "resetHoles(" + arguments);
 			
 			this.holes = new <int>[];
+			if (verbose)	trace("holes: " + this.holes);
 		}
 		
 		public function resetSwappablePawns():void 
@@ -265,6 +269,16 @@ package mygame
 			
 			this.swappablePawns.push(pawn1);
 			this.swappablePawns.push(pawn2);
+		}
+		
+		public function electAllPawnsForMatching():void
+		{
+			if (verbose)	trace(this + "electAllPawnsForMatching(" + arguments);
+			
+			for (var i:int = 0; i < this.pawns.length; i++) 
+			{
+				this.electPawnForMatching(this.pawns[i]);
+			}
 		}
 		
 		public function electPawnForMatching(pawn:Pawn):void 

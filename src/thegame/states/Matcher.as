@@ -1,8 +1,10 @@
-package mygame.states 
+package thegame.states 
 {
-	import mygame.Board;
-	import mygame.Pawn;
+	import flash.utils.Dictionary;
+	import thegame.Board;
+	import thegame.Pawn;
 	import org.osflash.signals.Signal;
+	import utils.ToString;
 	/**
 	 * ...
 	 * @author damrem
@@ -14,6 +16,15 @@ package mygame.states
 		public const NO_MATCHES_FOUND:Signal = new Signal();
 		public const MATCHES_FOUND:Signal = new Signal();
 		
+		/**
+		 * The context  within which we check matchings.
+		 */
+		/*
+		public var matchingContext:int;
+		public static const FILL:int = 0;
+		public static const SWAP:int = 1;
+		*/
+		
 		public function Matcher(board:Board) 
 		{
 			super(board);
@@ -23,14 +34,12 @@ package mygame.states
 		{
 			if (verbose)	trace(this + "enter(" + arguments);
 			
-			//if (verbose)	trace("matchables: " + this.board.matchablePawns);
-			
 			//	we will dispatch only if any of the matchable pawns is part of a match
 			var mustDispatchMatches:Boolean;
 			
 			if (this.board.matchablePawns.length == 0)
 			{
-				if (verbose)	trace("no matches");
+				if (verbose)	trace("NO MATCHES");
 				this.NO_MATCHES_FOUND.dispatch();
 				return;
 			}
@@ -43,7 +52,7 @@ package mygame.states
 					//	if there's at least 1 match on both axis, we register it to dispatch the match(es) later
 					var onePawnMatches:Vector.<Vector.<Pawn>> = this.getMatches(pawn);
 					
-					if (verbose)	trace(pawn+":" + onePawnMatches);
+					if (verbose)	if(onePawnMatches.length)	trace(this+"matches for "+pawn+":" + onePawnMatches);
 					
 					if (onePawnMatches.length)
 					{
@@ -58,10 +67,12 @@ package mygame.states
 				
 				if (mustDispatchMatches)
 				{
+					if (verbose)	trace("MATCHES FOUND");
 					this.MATCHES_FOUND.dispatch();
 				}
 				else
 				{
+					if (verbose)	trace("NO MATCHES");
 					this.NO_MATCHES_FOUND.dispatch();
 				}
 			}
@@ -69,14 +80,50 @@ package mygame.states
 		
 		private function electMatchesForDestruction(matches:Vector.<Vector.<Pawn>>):void
 		{
+			if (verbose)	trace(this + "electMatchesForDestruction(" + arguments);
+			
+			//	we will deduplicate the destroyable pawns
+			//var deduplicatedDestroyablePawns:Dictionary = new Dictionary();
+			
+			//	for each match of the set of matches
 			for (var i:int = 0; i < matches.length; i++)
 			{
+				//	for each pawn of the match
 				var match:Vector.<Pawn> = matches[i];
 				for (var j:int = 0; j < match.length; j++)
 				{
-					this.board.destroyablePawns.push(match[j]);
+					var pawn:Pawn = match[j];
+					if (this.board.destroyablePawns.indexOf(pawn) < 0)
+					{
+						this.board.destroyablePawns.push(match[j]);
+					}
+					
+					//	we register the pawn at its own index in order to deduplicate it
+					//deduplicatedDestroyablePawns[pawn.index] = pawn;
 				}
 			}
+			//if(verbose)	trace(this, "deduplicated: " + ToString.dictionary(deduplicatedDestroyablePawns));
+			
+			//	we deduplicate the destroyables
+			/*
+			var deduplicated:Dictionary = new Dictionary();
+			for (var k:int = 0; k < this.board.destroyablePawns.length; k++)
+			{
+				var pawn:Pawn = this.board.destroyablePawns[k];
+				deduplicated[pawn.index] = pawn;
+			}
+			*/
+			//trace("--------dedup");
+			/*
+			for (var index:String in deduplicatedDestroyablePawns)
+			{
+				//trace(prop + ":" + deduplicated[prop]);
+				this.board.destroyablePawns.push(deduplicatedDestroyablePawns[index]);
+				
+			}
+			*/
+			if(verbose)	trace("destroyables: " + this.board.destroyablePawns);
+			//trace("dedup--------");
 		}
 		
 		private function getMatches(pawn:Pawn):Vector.<Vector.<Pawn>>
@@ -95,7 +142,7 @@ package mygame.states
 		
 		private function getHorizontalMatch(pawn:Pawn):Vector.<Pawn>
 		{
-			if (verbose)	trace(this + "getHorizontalMatch(" + arguments);
+			//if (verbose)	trace(this + "getHorizontalMatch(" + arguments);
 			
 			var match:Vector.<Pawn> = new <Pawn>[];
 			match.push(pawn);
@@ -127,13 +174,13 @@ package mygame.states
 					match.push(rr);
 				}
 			}
-			if (verbose)	trace("horizontal: " + match);
+			//if (verbose)	trace("horizontal: " + match);
 			return match;
 		}
 		
 		private function getVerticalMatch(pawn:Pawn):Vector.<Pawn>
 		{
-			if (verbose)	trace(this + "getVerticalMatch(" + arguments);
+			//if (verbose)	trace(this + "getVerticalMatch(" + arguments);
 			
 			var match:Vector.<Pawn> = new <Pawn>[];
 			match.push(pawn);
@@ -158,29 +205,9 @@ package mygame.states
 					match.push(bb);
 				}
 			}
-			if (verbose)	trace("vertical: " + match);
+			//if (verbose)	trace("vertical: " + match);
 			return match;
 		}
-		
-		/*
-		private function checkMatchesInRowFromIndex(index:int):void
-		{
-			var matches:Vector.<Vector.<Pawn>> = new <Vector.<Pawn>>[];
-			var match:Vector.<Pawn> = new <Pawn>[];
-			var row:int = this.board.getRowFromIndex(index);
-			//	for each pawn of the row
-			for (var i:int = row * Board.WIDTH; i < (row + 1) * Board.WIDTH; i++)
-			{
-				var pawn:Pawn = this.board[i];
-				//	if the match is empty or if the pawn matches the match type
-				if (match.length == 0 || pawn == match[0])
-				{
-					match.push(pawn);
-				}
-				else 
-			}
-		}
-		*/
 		
 		override public function update():void
 		{
@@ -190,7 +217,7 @@ package mygame.states
 		override public function exit():void
 		{
 			if (verbose)	trace(this + "exit(" + arguments);
-			if (verbose)	trace(this.board.pawns);
+			//if (verbose)	trace(this.board.pawns);
 		}
 	}
 

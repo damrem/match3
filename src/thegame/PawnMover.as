@@ -1,4 +1,4 @@
-package mygame 
+package thegame 
 {
 	import flash.geom.Point;
 	import starling.animation.Tween;

@@ -1,7 +1,9 @@
-package mygame.states 
+package thegame.states 
 {
-	import mygame.Board;
-	import mygame.Pawn;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
+	import thegame.Board;
+	import thegame.Pawn;
 	import org.osflash.signals.Signal;
 	import starling.animation.Tween;
 	import starling.core.Starling;
@@ -38,24 +40,30 @@ package mygame.states
 			}
 		}
 		
+		private var tweens:Vector.<Tween>;
 		private function startDestroyingPawn(pawn:Pawn):void
 		{
+			if (!this.tweens)	this.tweens = new <Tween>[];
+			
 			if (verbose)	trace(this + "startDestroyingPawn(" + arguments);
 			
 			var tween:Tween = new Tween(pawn, DESTRUCTION_DURATION_SEC);
+			
+			if (verbose)	trace(this + "tween's target: " + tween.target);
+			
 			tween.fadeTo(0.0);
+			
+			this.tweens.push(tween);
+			
+			if (verbose)	trace("tween is already complete? " + tween.isComplete);
+			
 			tween.onComplete = this.onPawnDestructionComplete;
 			tween.onCompleteArgs = [pawn];
+			
 			Starling.juggler.add(tween);
+			
+			if (verbose)	trace("completed: " + this.nbCompleted+"/"+this.board.destroyablePawns.length);
 		}
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		/**
 		 * Check that all destruction tweens are complete.
@@ -63,21 +71,38 @@ package mygame.states
 		 */
 		private function onPawnDestructionComplete(pawn:Pawn):void 
 		{
-			if (verbose)	trace(this + "onPawnDestructionComplete(" + arguments);
+			/*if (verbose)*/	trace(this + "onPawnDestructionComplete(" + arguments);
 			
 			this.nbCompleted ++;
 			
 			//	we register the hole
-			this.endDestroyingPawn(pawn);
+			//this.endDestroyingPawn(pawn);
 
 			if (verbose)	trace("completed: " + this.nbCompleted+"/"+this.board.destroyablePawns.length);
 
 			if (this.nbCompleted == this.board.destroyablePawns.length)
 			{
-				this.board.resetDestroyablePawns();
+				if (verbose)	trace(this + "all destructions complete");
+				
+				this.endDestroyingAllDestroyablePawns();
+				
+				Starling.juggler.purge();
+				
 				this.nbCompleted = 0;
 				this.ALL_ARE_DESTROYED.dispatch();
 			}
+		}
+		
+		private function endDestroyingAllDestroyablePawns():void
+		{
+			if (verbose)	trace(this + "endDestroyingAllDestroyablePawns(" + arguments);
+			
+			for (var i:int = 0; i < this.board.destroyablePawns.length; i++) 
+			{
+				this.endDestroyingPawn(this.board.destroyablePawns[i]);
+			}
+			
+			this.board.resetDestroyablePawns();
 		}
 		
 		private function endDestroyingPawn(pawn:Pawn):void
@@ -86,6 +111,7 @@ package mygame.states
 			
 			this.board.pawns[pawn.index] = null;
 			this.board.holes.push(pawn.index);
+			if (verbose)	trace(this + "holes: " + this.board.holes);
 		}
 		
 		override public function update():void
@@ -96,7 +122,7 @@ package mygame.states
 		override public function exit():void
 		{
 			if (verbose)	trace(this + "exit(" + arguments);
-			if (verbose)	trace(this.board.pawns);
+			//if (verbose)	trace(this.board.pawns);
 		}
 	}
 

@@ -1,7 +1,7 @@
-package mygame.states 
+package thegame.states 
 {
-	import mygame.Board;
-	import mygame.Pawn;
+	import thegame.Board;
+	import thegame.Pawn;
 	import org.osflash.signals.Signal;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -35,8 +35,9 @@ package mygame.states
 				var pawn:Pawn = this.board.pawns[i];
 				try	//if (pawn)	//	TODO this tweak is temporar for the time without refilling the board
 				{
-					pawn.alpha = 1.0;
+					//pawn.alpha = 1.0;
 					pawn.addEventListener(TouchEvent.TOUCH, this.onTouch);
+					pawn.scaleX = pawn.scaleY = 1.0;
 				}
 				catch (e:Error)
 				{
@@ -60,7 +61,7 @@ package mygame.states
 				var pawn:Pawn = this.board.pawns[i];
 				try //if (pawn)	//	TODO this tweak is temporar for the time without refilling the board
 				{
-					pawn.alpha = 0.5;
+					pawn.scaleX = pawn.scaleY = 0.5;
 					//this.isActive = false;
 					pawn.removeEventListener(TouchEvent.TOUCH, this.onTouch);
 				}
@@ -76,39 +77,26 @@ package mygame.states
 		
 		private function onTouch(event:TouchEvent):void
 		{
-			//if (verbose)	trace(this + "onTouch(" + arguments);
-			//if (verbose)	trace(event.data);
-			//if (this.isActive)
+			var touch:Touch = event.getTouch(this.board.stage);
+			
+			if (touch && touch.phase == TouchPhase.ENDED)
 			{
-				var touch:Touch = event.getTouch(this.board.stage);
-				if (touch && touch.phase == TouchPhase.ENDED)
+				var pawn:Pawn = touch.target.parent as Pawn;
+				
+				if (Pawn.selected && this.board.arePawnsNeighbors(pawn, Pawn.selected) )
 				{
-					var pawn:Pawn = touch.target.parent as Pawn;
-					
-					if (this.selected && this.board.arePawnsNeighbors(pawn, this.selected) )
-					{
-						this.board.electPawnsForSwapping(pawn, this.selected);
-						SWAP_REQUESTED.dispatch();
-						this.selected = null;
-					}
-					else
-					{
-						this.selected = pawn;
-					}
-					
-					/*
-					if (pawn)
-					{
-						if(verbose)	trace("touched "+pawn);
-						this.board.electPawnForMatching(pawn);
-						this.SWAP_REQUESTED.dispatch();
-					}
-					*/
-					
-						
+					this.board.electPawnsForSwapping(pawn, Pawn.selected);
+					SWAP_REQUESTED.dispatch();
+					Pawn.unselect();
+				}
+				else
+				{
+					Pawn.select(pawn);
 				}
 			}
 		}
+		
+		
 		
 		
 		

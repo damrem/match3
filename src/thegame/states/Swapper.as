@@ -1,7 +1,7 @@
-package mygame.states 
+package thegame.states 
 {
-	import mygame.Board;
-	import mygame.Pawn;
+	import thegame.Board;
+	import thegame.Pawn;
 	import org.osflash.signals.Signal;
 	import flash.geom.Point;
 	import starling.animation.Tween;
@@ -33,11 +33,9 @@ package mygame.states
 			//	we swap the indexes of the 2 pawns on the board
 			var index1:int = pawn1.index;
 			
-			if (verbose)	trace(this.board.pawns);	//ok
+			if (verbose)	trace(pawn2);
 			this.board.setPawnIndex(pawn1, pawn2.index, false);
-			if (verbose)	trace(this.board.pawns);	//ko
 			this.board.setPawnIndex(pawn2, index1, false);
-			if (verbose)	trace(this.board.pawns);	//ko
 			
 			this.board.electPawnForMatching(pawn1);
 			this.board.electPawnForMatching(pawn2);
@@ -52,7 +50,7 @@ package mygame.states
 		
 		private function startSwappingPawn(pawn:Pawn, side:Boolean):void 
 		{
-			if (verbose)	trace(this + "startMovingPawn(" + arguments);
+			if (verbose)	trace(this + "startSwappingPawn(" + arguments);
 				
 			var originXY:Point = new Point(pawn.x, pawn.y);
 			var destXY:Point = this.board.indexToXY(pawn.index);

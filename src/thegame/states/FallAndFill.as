@@ -1,8 +1,8 @@
-package mygame.states 
+package thegame.states 
 {
 	import flash.geom.Point;
-	import mygame.Board;
-	import mygame.Pawn;
+	import thegame.Board;
+	import thegame.Pawn;
 	import org.osflash.signals.Signal;
 	import starling.animation.Tween;
 	import starling.core.Starling;
@@ -17,8 +17,8 @@ package mygame.states
 		/**
 		 * Dispatched when the board is filled so that we can set another state (Check).
 		 */
-		public const BOARD_FILLED:Signal = new Signal();
-		public const ALL_HAVE_LANDED:Signal = new Signal();
+		//public const BOARD_FILLED:Signal = new Signal();
+		public const FILLED:Signal = new Signal();
 		
 		private var nbCompleted:int;
 		
@@ -141,7 +141,7 @@ package mygame.states
 		
 		private function onFallingComplete(pawn:Pawn):void 
 		{
-			if (verbose)	trace(this + "onPawnDestructionComplete(" + arguments);
+			if (verbose)	trace(this + "onFallingComplete(" + arguments);
 			
 			this.nbCompleted ++;
 			
@@ -149,10 +149,18 @@ package mygame.states
 
 			if (this.nbCompleted == this.board.fallablePawns.length)
 			{
+				//	there are no more pawns to fall
 				this.board.resetFallablePawns();
 				this.nbCompleted = 0;
-				this.ALL_HAVE_LANDED.dispatch();
+				
+				//	all pawns must be checked
+				this.board.electAllPawnsForMatching();
+				
+				//	it is VERY IMPORTANT to purge the juggler BEFORE dispatching the signal
+				//	so that it is avalaible for animating the destructions
 				Starling.juggler.purge();
+
+				this.FILLED.dispatch();
 			}
 		}
 		

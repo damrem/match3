@@ -1,4 +1,4 @@
-package mygame 
+package thegame 
 {
 	import starling.display.Sprite;
 	/**

@@ -1,4 +1,4 @@
-package mygame 
+package thegame 
 {
 	import flash.geom.Point;
 	import starling.display.Image;
@@ -9,6 +9,7 @@ package mygame
 	
 	import starling.animation.Tween;
 	import starling.core.Starling;
+	
 	/**
 	 * ...
 	 * @author damrem
@@ -16,6 +17,8 @@ package mygame
 	public class Pawn extends Sprite
 	{
 		public static var verbose:Boolean;
+		
+		private static var _selected:Pawn;
 		
 		private var _type:int;
 		private var _index:int;
@@ -33,6 +36,9 @@ package mygame
 			this.type = Random.getInteger(0, 4);
 			
 			this.drawGem();
+			
+			Pawn.select(this);
+			Pawn.unselect();
 		}
 		
 		private function drawGem():void
@@ -80,6 +86,11 @@ package mygame
 			this.updateDebug();
 		}
 		
+		static public function get selected():Pawn 
+		{
+			return _selected;
+		}
+		
 		public function destroy():void
 		{
 			if (this.parent)
@@ -88,11 +99,22 @@ package mygame
 			}
 		}
 		
+		static public function select(pawn:Pawn):void
+		{
+			Pawn._selected = pawn;
+			Pawn._selected.alpha = 0.75;
+		}
+		
+		static public function unselect():void
+		{
+			Pawn._selected.alpha = 1.0;
+			Pawn._selected = null;
+		}
+		
 		public function toString():String
 		{
 			return "[Pawn (index:"+this.index+", color:"+this.type+")";
 		}
-		
 	}
 
 }

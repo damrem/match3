@@ -1,13 +1,13 @@
 package 
 {
-	import mygame.Board;
-	import mygame.GameController;
-	import mygame.GameScreen;
-	import mygame.states.FallAndFill;
-	import mygame.states.InputListener;
-	import mygame.states.Matcher;
-	import mygame.states.Destroyer;
-	import mygame.states.Swapper;
+	import thegame.Board;
+	import thegame.GameController;
+	import thegame.GameScreen;
+	import thegame.states.FallAndFill;
+	import thegame.states.InputListener;
+	import thegame.states.Matcher;
+	import thegame.states.Destroyer;
+	import thegame.states.Swapper;
 	import utils.getSimpleToString;
 	
 	/**
@@ -26,7 +26,7 @@ package
 				GameController,
 				InputListener,
 				Destroyer,
-				//Board, 
+				Board, 
 				Swapper,
 				Assets,
 				FallAndFill,
