@@ -15,6 +15,7 @@ package thegame.states
 		
 		public const NO_MATCHES_FOUND:Signal = new Signal();
 		public const MATCHES_FOUND:Signal = new Signal();
+		public const INVALID_SWAP:Signal = new Signal();
 		
 		/**
 		 * The context  within which we check matchings.
@@ -34,56 +35,107 @@ package thegame.states
 		{
 			if (verbose)	trace(this + "enter(" + arguments);
 			
-			//	we will dispatch only if any of the matchable pawns is part of a match
-			var mustDispatchMatches:Boolean;
-			
+			//	if no pawns have to be checked, we consider and dispatch that there's no matches found
 			if (this.board.matchablePawns.length == 0)
 			{
-				if (verbose)	trace("NO MATCHES");
+				if (verbose)	trace("NO MATCHES because no matchable pawns");
 				this.NO_MATCHES_FOUND.dispatch();
 				return;
 			}
+			
+			
+			
+			
+			
+			//	we check if there are matches
+			//	for each matchable pawn
+			var areMatchesFound:Boolean;	//	we will dispatch only if any of the matchable pawns is part of a match
+			for (var i:int = 0; i < this.board.matchablePawns.length;i++ )
+			{
+				var pawn:Pawn = this.board.matchablePawns[i];
+				
+				var onePawnMatches:Vector.<Vector.<Pawn>> = this.getMatches(pawn);
+				
+				if (verbose)	if(onePawnMatches.length)	trace(this+"matches for "+pawn+":" + onePawnMatches);
+				
+				//	if there's at least 1 match (vertical and/or horizontal)
+				//	we will dispatch it, and we elect the pawns for later destruction
+				if (onePawnMatches.length)
+				{
+					areMatchesFound = true;
+					
+					this.electMatchesForDestruction(onePawnMatches);
+				}
+			}
+			
+			trace(this+"matchables: " + this.board.matchablePawns);
+			
+			//	swap check and no matches
+			if (this.board.matchablePawns.length == 2 && !areMatchesFound)
+			{
+				if (verbose)	trace(this+"swap check and no matches");
+				this.board.electPawnsForSwapping(this.board.matchablePawns[0], this.board.matchablePawns[1]);
+				//this.board.electPawnsForSwappingswappablePawns[0] = this.board.matchablePawns[0];
+				//this.board.swappablePawns[1] = this.board.matchablePawns[1];
+				this.board.resetMatchablePawns();
+				this.INVALID_SWAP.dispatch(true);
+			}
+
+			//	global check and no matches
+			else if (this.board.matchablePawns.length > 2 && !areMatchesFound)
+			{
+				if (verbose)	trace(this+"global check and no matches");
+				this.board.resetMatchablePawns();
+				this.NO_MATCHES_FOUND.dispatch();
+			}
+			
+			//	any check and matches found
+			else if (areMatchesFound)
+			{
+				if (verbose)	trace(this+"any check and matches found");
+				this.board.resetMatchablePawns();
+				this.MATCHES_FOUND.dispatch();
+			}
+			
+			
+			
+			
+			/*
+			//	if pawns (the 2 swapped, or all the board) have to be checked, 
+			//	we check them and elect the matching one for destruction
 			else
 			{
-				//	for each matchable pawn
-				for (var i:int = 0; i < this.board.matchablePawns.length;i++ )
+				
+				
+				//	if it's a swap (2 matchables only) and no match are found, we elect them for swapping again.
+				if (!areMatchesFound && this.board.matchablePawns.length == 2)
 				{
-					var pawn:Pawn = this.board.matchablePawns[i];
-					//	if there's at least 1 match on both axis, we register it to dispatch the match(es) later
-					var onePawnMatches:Vector.<Vector.<Pawn>> = this.getMatches(pawn);
-					
-					if (verbose)	if(onePawnMatches.length)	trace(this+"matches for "+pawn+":" + onePawnMatches);
-					
-					if (onePawnMatches.length)
-					{
-						mustDispatchMatches = true;
-						
-						this.electMatchesForDestruction(onePawnMatches);
-						
-						//if (verbose)	trace("matches");
-					}
+					if(verbose)	trace(this + "INVALID SWAP");
+					this.board.swappablePawns[0] = this.board.matchablePawns[0];
+					this.board.swappablePawns[1] = this.board.matchablePawns[1];
+					this.INVALID_SWAP.dispatch();
 				}
+				
 				this.board.resetMatchablePawns();
 				
-				if (mustDispatchMatches)
+				if (areMatchesFound)
 				{
 					if (verbose)	trace("MATCHES FOUND");
 					this.MATCHES_FOUND.dispatch();
 				}
 				else
 				{
-					if (verbose)	trace("NO MATCHES");
+					if (verbose)	trace("NO MATCHES because of invalid swap");
+					
 					this.NO_MATCHES_FOUND.dispatch();
 				}
 			}
+			*/
 		}
 		
 		private function electMatchesForDestruction(matches:Vector.<Vector.<Pawn>>):void
 		{
 			if (verbose)	trace(this + "electMatchesForDestruction(" + arguments);
-			
-			//	we will deduplicate the destroyable pawns
-			//var deduplicatedDestroyablePawns:Dictionary = new Dictionary();
 			
 			//	for each match of the set of matches
 			for (var i:int = 0; i < matches.length; i++)
@@ -97,33 +149,10 @@ package thegame.states
 					{
 						this.board.destroyablePawns.push(match[j]);
 					}
-					
-					//	we register the pawn at its own index in order to deduplicate it
-					//deduplicatedDestroyablePawns[pawn.index] = pawn;
 				}
 			}
-			//if(verbose)	trace(this, "deduplicated: " + ToString.dictionary(deduplicatedDestroyablePawns));
 			
-			//	we deduplicate the destroyables
-			/*
-			var deduplicated:Dictionary = new Dictionary();
-			for (var k:int = 0; k < this.board.destroyablePawns.length; k++)
-			{
-				var pawn:Pawn = this.board.destroyablePawns[k];
-				deduplicated[pawn.index] = pawn;
-			}
-			*/
-			//trace("--------dedup");
-			/*
-			for (var index:String in deduplicatedDestroyablePawns)
-			{
-				//trace(prop + ":" + deduplicated[prop]);
-				this.board.destroyablePawns.push(deduplicatedDestroyablePawns[index]);
-				
-			}
-			*/
 			if(verbose)	trace("destroyables: " + this.board.destroyablePawns);
-			//trace("dedup--------");
 		}
 		
 		private function getMatches(pawn:Pawn):Vector.<Vector.<Pawn>>

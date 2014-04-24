@@ -49,7 +49,9 @@ package thegame
 
 			this.matcher = new Matcher(board);
 			this.matcher.MATCHES_FOUND.add(this.gotoDestroyer);
+			this.matcher.INVALID_SWAP.add(this.gotoSwapper);
 			this.matcher.NO_MATCHES_FOUND.add(this.gotoInputListener);
+			//this.matcher.NO_MATCHES_FOUND.add(this.gotoSwapper);
 			
 			this.destroyer = new Destroyer(board);
 			this.destroyer.ALL_ARE_DESTROYED.add(this.gotoFillAndFall);
@@ -91,10 +93,15 @@ package thegame
 			this.setState(this.inputListener);
 		}
 		
-		private function gotoSwapper():void 
+		/**
+		 * Depending on from what's just happened, we will swap or unswap.
+		 * @param	isUnswapping
+		 */
+		private function gotoSwapper(isUnswapping:Boolean=false):void 
 		{
 			if (verbose)	trace(this + "gotoSwapper(" + arguments);
 			
+			this.swapper.isUnswapping = isUnswapping; 
 			this.setState(this.swapper);
 		}
 		

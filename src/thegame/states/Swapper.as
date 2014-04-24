@@ -18,6 +18,8 @@ package thegame.states
 		public const SWAPPED:Signal = new Signal();
 		public const UNSWAPPED:Signal = new Signal();
 		
+		private var _isUnswapping:Boolean;
+		
 		public function Swapper(board:Board) 
 		{
 			super(board);
@@ -37,8 +39,13 @@ package thegame.states
 			this.board.setPawnIndex(pawn1, pawn2.index, false);
 			this.board.setPawnIndex(pawn2, index1, false);
 			
-			this.board.electPawnForMatching(pawn1);
-			this.board.electPawnForMatching(pawn2);
+			//	we elect swapped pawns for matching
+			//	only if it is an actual swap (and not an unswap)
+			if (!this._isUnswapping)
+			{
+				this.board.electPawnForMatching(pawn1);
+				this.board.electPawnForMatching(pawn2);
+			}
 			
 			//	we start the animations
 			this.startSwappingPawn(pawn1, true);
@@ -77,7 +84,14 @@ package thegame.states
 			{
 				Starling.juggler.purge();
 				this.nbSwaps = 0;
-				this.SWAPPED.dispatch();
+				if (this._isUnswapping)
+				{
+					this.UNSWAPPED.dispatch();
+				}
+				else
+				{
+					this.SWAPPED.dispatch();
+				}
 			}
 		}
 		
@@ -90,6 +104,11 @@ package thegame.states
 		{
 			if (verbose)	trace(this + "exit(" + arguments);
 			if (verbose)	trace(this.board.pawns);
+		}
+		
+		public function set isUnswapping(value:Boolean):void 
+		{
+			_isUnswapping = value;
 		}
 	}
 
