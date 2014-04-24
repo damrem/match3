@@ -22,7 +22,7 @@ package thegame
 		public const SCORE_UPDATED:Signal = new Signal();
 
 		//	time management
-		public static const GAME_DURATION_MIN:Number = 5.0;
+		public static const GAME_DURATION_MIN:Number = 1.0;
 		private var timer:Timer;
 		private var _timeLeft_sec:int;
 		public const TIME_LEFT_UPDATED:Signal = new Signal();

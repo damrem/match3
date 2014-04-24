@@ -89,20 +89,23 @@ package thegame.states
 			}
 			
 			var i:int;
+			var hole:int;
+			var col:int;
+			
 			for (i = 0; i< this.board.holes.length - 1; i++)
 			{
-				var hole:int = this.board.holes[i];
-				var col:int = this.board.getColFromIndex(hole);
+				hole = this.board.holes[i];
+				col = this.board.getColFromIndex(hole);
 				nbHolesPerCol[col] ++;
 			}
 			
 			//	for each hole, we generate a pawn above the column
 			for (i = 0; i< this.board.holes.length; i++)
 			{
-				var hole:int = this.board.holes[i];
+				hole = this.board.holes[i];
 				var pawn:Pawn = new Pawn(hole);
 				
-				var col:int = this.board.getColFromIndex(hole);
+				col = this.board.getColFromIndex(hole);
 				var nbHolesInCol:int = nbHolesPerCol[col];
 				
 				pawn.x = this.board.getXYFromIndex(hole).x;

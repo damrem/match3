@@ -72,149 +72,76 @@ package thegame.states
 		{
 			var touch:Touch = event.getTouch(this.board.stage);
 			
-			if (touch && touch.phase == TouchPhase.ENDED)
+			
+			if (touch && (touch.phase == TouchPhase.BEGAN || touch.phase == TouchPhase.ENDED))
 			{
 				var touchXY:Point = touch.getLocation(this.board.touchZone);
+			
+				if (verbose)	trace(touchXY);
 				var index:int = this.board.getIndexFromXY(touchXY);	
 				var pawn:Pawn = this.board.pawns[index];
 				
-				//	When we touch a pawn and nothing is selected, the pawn is selected.
+				//	NO PAWN SELECTED
+				//	When we touch/tap a pawn and nothing is selected, the pawn is selected.
 				if (!Pawn.selected)
 				{
+					if (verbose)	trace("none selected -> touched selected");
 					Pawn.select(pawn);
+					return;
 				}
-				else
+				
+				//	NEIGHBOR PAWNS
+				//	When we touch/tap a pawn neighbor to the selected one, we try to swap them.
+				if (this.board.arePawnsNeighbors(pawn, Pawn.selected))
 				{
-					//	When we touch a pawn neighbor to the selected one, we try to swap them.
-					if (this.board.arePawnsNeighbors(pawn, Pawn.selected))
-					{
-						this.board.electPawnsForSwapping(pawn, Pawn.selected);
-						SWAP_REQUESTED.dispatch();
-						Pawn.unselect();
-					}
-					//	When we touch a pawn not neighbor to the selected one, 
-					//	we unselect the previous one and we select the touched one.
-					else if (pawn != Pawn.selected)
-					{
-						Pawn.unselect();
-						Pawn.select(pawn);
-					}
-					//	When we touch the selected pawn, we unselect it.
-					else
-					{
-						Pawn.unselect();
-					}
-				}
-			}
-		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		public function activateTouchPawns():void
-		{
-			if (verbose)	trace(this + "enter(" + arguments);
-			
-			for (var i:int = 0; i < this.board.pawns.length; i++ )
-			{
-				var pawn:Pawn = this.board.pawns[i];
-				try
-				{
-					pawn.addEventListener(TouchEvent.TOUCH, this.onTouchPawn);
+					if (verbose)	trace("neighbors -> swap");
 					
-				}
-				catch (e:Error)
-				{
-					trace(i);
+					this.board.electPawnsForSwapping(pawn, Pawn.selected);
+					SWAP_REQUESTED.dispatch();
+					Pawn.unselect();
+					return;
 				}
 				
-			}
-		}
-		
-		
-		
-		
-		public function unactivateTouchPawns():void
-		{
-			if (verbose)	trace(this + "exit(" + arguments);
-			
-			for (var i:int = 0; i < this.board.pawns.length; i++ )
-			{
-				var pawn:Pawn = this.board.pawns[i];
-				try
+				//	DISTANT PAWNS
+				if (pawn != Pawn.selected)
 				{
-					pawn.removeEventListener(TouchEvent.TOUCH, this.onTouchPawn);
-				}
-				catch (e:Error)
-				{
-					trace(i);
-				}
-			}
-			
-			if (verbose)	trace(this.board.pawns);
-			
-		}
-		
-		/**
-		 * When we touch a pawn and nothing is selected, the pawn is selected.
-		 * 
-		 * When we touch a pawn neighbor to the selected one, we try to swap them.
-		 * 
-		 * When we touch a pawn not neighbor to the selected one, 
-		 * we unselect the previous one and we select the touched one.
-		 * 
-		 * When we touch the selected pawn, we unselect it.
-		 * 
-		 * @param	event
-		 */
-		private function onTouchPawn(event:TouchEvent):void
-		{
-			var touch:Touch = event.getTouch(this.board.stage);
-			
-			if (touch && touch.phase == TouchPhase.ENDED)
-			{
-				var pawn:Pawn = touch.target.parent as Pawn;
-				
-				//	When we touch a pawn and nothing is selected, the pawn is selected.
-				if (!Pawn.selected)
-				{
-					Pawn.select(pawn);
-				}
-				else
-				{
-					//	When we touch a pawn neighbor to the selected one, we try to swap them.
-					if (this.board.arePawnsNeighbors(pawn, Pawn.selected))
-					{
-						this.board.electPawnsForSwapping(pawn, Pawn.selected);
-						SWAP_REQUESTED.dispatch();
-						Pawn.unselect();
-					}
 					//	When we touch a pawn not neighbor to the selected one, 
 					//	we unselect the previous one and we select the touched one.
-					else if (pawn != Pawn.selected)
+					if (touch.phase == TouchPhase.BEGAN)
+					{
+						if (verbose)	trace("distant + -> replace selection");
+						Pawn.unselect();
+						Pawn.select(pawn);
+						return;
+					}
+					//	When we release on a pawn not neighbor to the selected one, we only unselect.
+					if (touch.phase == TouchPhase.ENDED)
+					{
+						Pawn.unselect();
+						return;
+					}
+				}
+				
+				//	SAME PAWN
+				else if (pawn == Pawn.selected)
+				{
+					//	When we touch the selected pawn, we unselect it.
+					if (touch.phase == TouchPhase.BEGAN)
 					{
 						Pawn.unselect();
 						Pawn.select(pawn);
+						return;
 					}
-					//	When we touch the selected pawn, we unselect it.
-					else
+					//	When we release on the selected pawn, we do nothing.
+					else if (touch.phase == TouchPhase.ENDED)
 					{
-						Pawn.unselect();
+						//Pawn.unselect();
 					}
 				}
+	
+			
 			}
 		}
-		
-		
-		
-		
-		
 		
 	}
 
