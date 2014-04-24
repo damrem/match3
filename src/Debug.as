@@ -19,14 +19,14 @@ package
 		{
 			var classes:Vector.<Class> = new <Class>
 			[
-				//Embeds,
-				//Main,
-				//Root,
-				//GameScreen,
+				Embeds,
+				Main,
+				Root,
+				GameScreen,
 				GameController,
-				InputListener,
+				//InputListener,
 				//Destroyer,
-				Board, 
+				//Board, 
 				//Swapper,
 				//Assets,
 				//FallAndFill,
