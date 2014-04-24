@@ -37,7 +37,7 @@ package thegame.states
 				{
 					//pawn.alpha = 1.0;
 					pawn.addEventListener(TouchEvent.TOUCH, this.onTouch);
-					pawn.scaleX = pawn.scaleY = 1.0;
+					//pawn.scaleX = pawn.scaleY = 1.0;
 				}
 				catch (e:Error)
 				{
@@ -61,7 +61,7 @@ package thegame.states
 				var pawn:Pawn = this.board.pawns[i];
 				try //if (pawn)	//	TODO this tweak is temporar for the time without refilling the board
 				{
-					pawn.scaleX = pawn.scaleY = 0.5;
+					//pawn.scaleX = pawn.scaleY = 0.5;
 					//this.isActive = false;
 					pawn.removeEventListener(TouchEvent.TOUCH, this.onTouch);
 				}
@@ -75,6 +75,18 @@ package thegame.states
 			
 		}
 		
+		/**
+		 * When we touch a pawn and nothing is selected, the pawn is selected.
+		 * 
+		 * When we touch a pawn neighbor to the selected one, we try to swap them.
+		 * 
+		 * When we touch a pawn not neighbor to the selected one, 
+		 * we unselect the previous one and we select the touched one.
+		 * 
+		 * When we touch the selected pawn, we unselect it.
+		 * 
+		 * @param	event
+		 */
 		private function onTouch(event:TouchEvent):void
 		{
 			var touch:Touch = event.getTouch(this.board.stage);
@@ -83,15 +95,32 @@ package thegame.states
 			{
 				var pawn:Pawn = touch.target.parent as Pawn;
 				
-				if (Pawn.selected && this.board.arePawnsNeighbors(pawn, Pawn.selected) )
+				//	When we touch a pawn and nothing is selected, the pawn is selected.
+				if (!Pawn.selected)
 				{
-					this.board.electPawnsForSwapping(pawn, Pawn.selected);
-					SWAP_REQUESTED.dispatch();
-					Pawn.unselect();
+					Pawn.select(pawn);
 				}
 				else
 				{
-					Pawn.select(pawn);
+					//	When we touch a pawn neighbor to the selected one, we try to swap them.
+					if (this.board.arePawnsNeighbors(pawn, Pawn.selected))
+					{
+						this.board.electPawnsForSwapping(pawn, Pawn.selected);
+						SWAP_REQUESTED.dispatch();
+						Pawn.unselect();
+					}
+					//	When we touch a pawn not neighbor to the selected one, 
+					//	we unselect the previous one and we select the touched one.
+					else if (pawn != Pawn.selected)
+					{
+						Pawn.unselect();
+						Pawn.select(pawn);
+					}
+					//	When we touch the selected pawn, we unselect it.
+					else
+					{
+						Pawn.unselect();
+					}
 				}
 			}
 		}

@@ -80,18 +80,6 @@ package thegame
 			
 		}
 		
-		public function get isFull():Boolean
-		{
-			for (var i:int = 0; i < this.pawns.length; i++)
-			{
-				if (!pawns[i])
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-		
 		public function getTopPawn(refPawn:Pawn):Pawn
 		{
 			if (refPawn.index < WIDTH)

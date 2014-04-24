@@ -75,6 +75,7 @@ package thegame.states
 			this.nbSwaps++;
 			if (this.nbSwaps == 2)
 			{
+				Starling.juggler.purge();
 				this.nbSwaps = 0;
 				this.SWAPPED.dispatch();
 			}
