@@ -33,12 +33,9 @@ package thegame
 			if (verbose)	trace(this + "GameController(" + arguments);
 			
 			this._board = new Board();
-			this._board.x = this._board.y = 100;
 			
 			this.fillAndFall = new FallAndFill(board);
 			this.fillAndFall.FILLED.add(this.gotoMatcher);
-			//this.fillAndFall.ALL_HAVE_LANDED.add(this.gotoInputListener);
-			//this.fall.LANDED.add(this.gotoFall);
 			
 			
 			this.inputListener = new InputListener(board);
@@ -52,7 +49,6 @@ package thegame
 			this.matcher.MATCHES_FOUND.add(this.gotoDestroyer);
 			this.matcher.INVALID_SWAP.add(this.gotoSwapper);
 			this.matcher.NO_MATCHES_FOUND.add(this.gotoInputListener);
-			//this.matcher.NO_MATCHES_FOUND.add(this.gotoSwapper);
 			
 			this.destroyer = new Destroyer(board);
 			this.destroyer.ALL_ARE_DESTROYED.add(this.gotoFillAndFall);
@@ -71,8 +67,6 @@ package thegame
 		
 		private function setState(state:AbstractState):void
 		{
-			//if (verbose)	trace(this + "setState(" + arguments);
-			
 			if (currentState)
 			{
 				currentState.exit();
@@ -84,7 +78,6 @@ package thegame
 		private function update(event:TimerEvent):void
 		{
 			this.currentState.update();
-			//this.pawnMover.update();
 		}
 		
 		private function gotoInputListener():void
