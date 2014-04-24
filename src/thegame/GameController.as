@@ -17,20 +17,24 @@ package thegame
 	{
 		public static var verbose:Boolean;
 		
-
+		//	score management
 		private var _score:int;
 		public const SCORE_UPDATED:Signal = new Signal();
 
+		//	time management
 		public static const GAME_DURATION_MIN:Number = 5.0;
 		private var timer:Timer;
 		private var _timeLeft_sec:int;
 		public const TIME_LEFT_UPDATED:Signal = new Signal();
 		public const TIME_S_UP:Signal = new Signal();
 		
+		//	the board containing the pawns
 		private var _board:Board;
 		
+		//	the current sub-controller
 		private var currentState:AbstractState;
 		
+		//	the sub-controllers
 		private var matcher:Matcher;
 		private var destroyer:Destroyer;
 		private var fillAndFall:FallAndFill;

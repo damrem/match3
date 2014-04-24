@@ -77,14 +77,39 @@ package thegame.states
 		
 		private function refill():void
 		{
+			if (verbose)	trace(this + "refill(" + arguments);
+			
+			//	during one refill, we will register how many pawns we create per column
+			//	in order to create them at the proper y coordinate (and not all at the same y)
+			
+			var nbHolesPerCol:Vector.<int> = new <int>[];
+			for (var j:int = 0; j < Board.WIDTH; j++)
+			{
+				nbHolesPerCol.push(0);
+			}
+			
+			var i:int;
+			for (i = 0; i< this.board.holes.length - 1; i++)
+			{
+				var hole:int = this.board.holes[i];
+				var col:int = this.board.getColFromIndex(hole);
+				nbHolesPerCol[col] ++;
+			}
+			
 			//	for each hole, we generate a pawn above the column
-			for (var i:int = 0; i < this.board.holes.length; i++)
+			for (i = 0; i< this.board.holes.length; i++)
 			{
 				var hole:int = this.board.holes[i];
 				var pawn:Pawn = new Pawn(hole);
-				//this.board.pawns[i] = pawn;
+				
+				var col:int = this.board.getColFromIndex(hole);
+				var nbHolesInCol:int = nbHolesPerCol[col];
+				
 				pawn.x = this.board.getXYFromIndex(hole).x;
-				pawn.y = - Pawn.SIZE;
+				if (verbose)	trace("index of generated pawn: " + pawn.index);
+				pawn.y = - Pawn.SIZE * nbHolesInCol + this.board.getRowFromIndex(pawn.index) * Pawn.SIZE;
+				if (verbose)	trace("y generated pawn: " + pawn.y);
+				
 				this.board.pawnContainer.addChild(pawn);
 				this.board.electPawnForFalling(pawn, hole);
 			}
