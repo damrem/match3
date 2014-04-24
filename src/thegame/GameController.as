@@ -26,8 +26,6 @@ package thegame
 		private var inputListener:InputListener;
 		private var swapper:Swapper;
 		
-		private var timer:Timer;
-		
 		public function GameController() 
 		{
 			if (verbose)	trace(this + "GameController(" + arguments);
@@ -52,17 +50,15 @@ package thegame
 			
 			this.destroyer = new Destroyer(board);
 			this.destroyer.ALL_ARE_DESTROYED.add(this.gotoFillAndFall);
-			
-			this.timer = new Timer(1000 / 60);
-			this.timer.addEventListener(TimerEvent.TIMER, this.update);
 		}
 		
 		public function start():void
 		{
 			if (verbose)	trace(this + "start(" + arguments);
 			
-			this.gotoInputListener();
-			this.timer.start();
+			//this.gotoInputListener();
+			this.board.fillWithHoles();
+			this.gotoFillAndFall();
 		}
 		
 		private function setState(state:AbstractState):void
@@ -73,11 +69,6 @@ package thegame
 			}
 			currentState = state;
 			currentState.enter();
-		}
-		
-		private function update(event:TimerEvent):void
-		{
-			this.currentState.update();
 		}
 		
 		private function gotoInputListener():void

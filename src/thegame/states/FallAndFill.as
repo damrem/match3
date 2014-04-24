@@ -164,28 +164,6 @@ package thegame.states
 			}
 		}
 		
-		/*
-		private function onFallMoveComplete(pawn:Pawn, destinationIndex:int):void
-		{
-			if (verbose)	trace(this + "onFallMoveComplete(" + arguments);
-			
-			this.board.electPawnForMovement(pawn, destinationIndex);
-			//this.LANDED.dispatch();
-		}
-		*/
-		
-		override public function update():void
-		{
-			/*
-			if (this.board.isFull)
-			{
-				if (verbose)	trace(this + "update(" + arguments +"->the board is full");
-				
-				this.BOARD_FILLED.dispatch();
-			}
-			*/
-		}
-		
 		override public function exit():void
 		{
 			if (verbose)	trace(this + "exit(" + arguments);

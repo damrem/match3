@@ -29,6 +29,8 @@ package thegame.states
 		
 		override public function enter():void
 		{
+			if (verbose)	trace(this + "enter(" + arguments);
+			
 			this.activateTouchZone();
 		}
 		
@@ -47,13 +49,10 @@ package thegame.states
 			}
 		}
 		
-		override public function update():void
-		{
-			
-		}
-		
 		override public function exit():void
 		{
+			if (verbose)	trace(this + "exit(" + arguments);
+			
 			this.activateTouchZone(false);
 		}
 		

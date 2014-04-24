@@ -20,11 +20,6 @@ package thegame.states
 			abstract(this, "enter");
 		}
 		
-		public function update():void
-		{
-			abstract(this, "update");
-		}
-		
 		public function exit():void
 		{
 			abstract(this, "exit");

@@ -114,11 +114,6 @@ package thegame.states
 			if (verbose)	trace(this + "holes: " + this.board.holes);
 		}
 		
-		override public function update():void
-		{
-			
-		}
-		
 		override public function exit():void
 		{
 			if (verbose)	trace(this + "exit(" + arguments);

@@ -95,11 +95,6 @@ package thegame.states
 			}
 		}
 		
-		override public function update():void
-		{
-			
-		}
-		
 		override public function exit():void
 		{
 			if (verbose)	trace(this + "exit(" + arguments);

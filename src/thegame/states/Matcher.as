@@ -238,11 +238,6 @@ package thegame.states
 			return match;
 		}
 		
-		override public function update():void
-		{
-			
-		}
-		
 		override public function exit():void
 		{
 			if (verbose)	trace(this + "exit(" + arguments);

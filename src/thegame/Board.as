@@ -81,7 +81,7 @@ package thegame
 			this.resetFallablePawns();
 			this.resetDestroyablePawns();
 			
-			this.fill();
+			//this.fill();
 		}
 		
 		//	TODO no matches
@@ -247,6 +247,18 @@ package thegame
 			if(emptyPrevIndex)	this.pawns[pawn.index] = null;
 			this.pawns[destIndex] = pawn;
 			pawn.setIndex(destIndex);
+		}
+		
+		public function fillWithHoles():void
+		{
+			if (verbose)	trace(this + "fillHoles(" + arguments);
+			
+			this.resetHoles();
+			for (var i:int = 0; i < WIDTH * HEIGHT; i++)
+			{
+				this.pawns.push(null);
+				this.holes.push(i);
+			}
 		}
 		
 		/**
