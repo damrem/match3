@@ -1,7 +1,10 @@
 package thegame 
 {
+	import starling.display.DisplayObjectContainer;
 	import flash.geom.Point;
 	import starling.animation.Tween;
+	import starling.display.DisplayObject;
+	import starling.display.Quad;
 	import starling.display.Sprite;
 	/**
 	 * ...
@@ -13,6 +16,16 @@ package thegame
 		
 		public static var WIDTH:int = 4;
 		public static var HEIGHT:int = 4;
+		
+		/**
+		 * A display object to capture touch events.
+		 */
+		public var touchZone:DisplayObject;
+		
+		/**
+		 * A container for the pawns.
+		 */
+		public var pawnContainer:DisplayObjectContainer;
 		
 		/**
 		 * Pawns on the board.
@@ -49,6 +62,13 @@ package thegame
 		{
 			if (verbose)	trace(this + "Board(" + arguments);
 			
+			this.pawnContainer = new Sprite();
+			this.addChild(this.pawnContainer);
+			
+			this.touchZone = new Quad(w * Pawn.SIZE, h * Pawn.SIZE, 0x00ff0000);
+			this.touchZone.alpha = 0.0;
+			this.addChild(this.touchZone);
+			
 			WIDTH = w;
 			HEIGHT = h;
 			
@@ -75,7 +95,7 @@ package thegame
 				var row:int = Math.floor(i / WIDTH);
 				pawn.y = row * Pawn.SIZE;
 				this.pawns[i] = pawn;
-				this.addChild(pawn);
+				this.pawnContainer.addChild(pawn);
 			}
 			
 		}
@@ -153,7 +173,9 @@ package thegame
 			return this.pawns[refPawn.index + 1];
 		}
 		
-		public function indexToCol(index:int):int
+		
+		
+		public function getColFromIndex(index:int):int
 		{
 			return index % WIDTH;
 		}
@@ -164,19 +186,37 @@ package thegame
 			return row;
 		}
 		
-		public function colToX(col:int):Number
+		public function getXfromCol(col:int):Number
 		{
 			return col * Pawn.SIZE;
 		}
 		
-		public function rowToY(row:int):Number
+		public function getColFromX(x:Number):int
+		{
+			return x / Pawn.SIZE;
+		}
+		
+		public function getYfromRow(row:int):Number
 		{
 			return row * Pawn.SIZE;
 		}
 		
-		public function indexToXY(index:int):Point
+		public function getRowFromY(y:Number):int
 		{
-			return new Point(colToX(indexToCol(index)), rowToY(getRowFromIndex(index)));
+			return y / Pawn.SIZE;
+		}
+		
+		public function getXYFromIndex(index:int):Point
+		{
+			return new Point(getXfromCol(getColFromIndex(index)), getYfromRow(getRowFromIndex(index)));
+		}
+		
+		public function getIndexFromXY(xy:Point):int
+		{
+			var col:int = this.getColFromX(xy.x);
+			var row:int = this.getRowFromY(xy.y);
+			
+			return row * WIDTH + col;
 		}
 		
 		/**

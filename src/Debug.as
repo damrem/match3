@@ -19,18 +19,18 @@ package
 		{
 			var classes:Vector.<Class> = new <Class>
 			[
-				Embeds,
-				Main,
-				Root,
-				GameScreen,
+				//Embeds,
+				//Main,
+				//Root,
+				//GameScreen,
 				GameController,
 				InputListener,
-				Destroyer,
+				//Destroyer,
 				Board, 
-				Swapper,
-				Assets,
-				FallAndFill,
-				Matcher
+				//Swapper,
+				//Assets,
+				//FallAndFill,
+				//Matcher
 			];
 			
 			for each(var classToDebug:Class in classes)

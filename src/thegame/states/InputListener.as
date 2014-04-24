@@ -1,5 +1,6 @@
 package thegame.states 
 {
+	import flash.geom.Point;
 	import thegame.Board;
 	import thegame.Pawn;
 	import org.osflash.signals.Signal;
@@ -28,22 +29,21 @@ package thegame.states
 		
 		override public function enter():void
 		{
+			this.activateTouchZone();
+		}
+		
+		
+		public function activateTouchZone(mustActivate:Boolean = true):void
+		{
 			if (verbose)	trace(this + "enter(" + arguments);
 			
-			for (var i:int = 0; i < this.board.pawns.length; i++ )
+			if (mustActivate)
 			{
-				var pawn:Pawn = this.board.pawns[i];
-				try	//if (pawn)	//	TODO this tweak is temporar for the time without refilling the board
-				{
-					//pawn.alpha = 1.0;
-					pawn.addEventListener(TouchEvent.TOUCH, this.onTouch);
-					//pawn.scaleX = pawn.scaleY = 1.0;
-				}
-				catch (e:Error)
-				{
-					trace(i);
-				}
-				
+				this.board.touchZone.addEventListener(TouchEvent.TOUCH, this.onZoneTouched);
+			}
+			else
+			{
+				this.board.touchZone.removeEventListener(TouchEvent.TOUCH, this.onZoneTouched);
 			}
 		}
 		
@@ -54,16 +54,103 @@ package thegame.states
 		
 		override public function exit():void
 		{
+			this.activateTouchZone(false);
+		}
+		
+		/**
+		 * When we touch a pawn and nothing is selected, the pawn is selected.
+		 * 
+		 * When we touch a pawn neighbor to the selected one, we try to swap them.
+		 * 
+		 * When we touch a pawn not neighbor to the selected one, 
+		 * we unselect the previous one and we select the touched one.
+		 * 
+		 * When we touch the selected pawn, we unselect it.
+		 * 
+		 * @param	event
+		 */
+		private function onZoneTouched(event:TouchEvent):void
+		{
+			var touch:Touch = event.getTouch(this.board.stage);
+			
+			if (touch && touch.phase == TouchPhase.ENDED)
+			{
+				var touchXY:Point = touch.getLocation(this.board.touchZone);
+				var index:int = this.board.getIndexFromXY(touchXY);	
+				var pawn:Pawn = this.board.pawns[index];
+				
+				//	When we touch a pawn and nothing is selected, the pawn is selected.
+				if (!Pawn.selected)
+				{
+					Pawn.select(pawn);
+				}
+				else
+				{
+					//	When we touch a pawn neighbor to the selected one, we try to swap them.
+					if (this.board.arePawnsNeighbors(pawn, Pawn.selected))
+					{
+						this.board.electPawnsForSwapping(pawn, Pawn.selected);
+						SWAP_REQUESTED.dispatch();
+						Pawn.unselect();
+					}
+					//	When we touch a pawn not neighbor to the selected one, 
+					//	we unselect the previous one and we select the touched one.
+					else if (pawn != Pawn.selected)
+					{
+						Pawn.unselect();
+						Pawn.select(pawn);
+					}
+					//	When we touch the selected pawn, we unselect it.
+					else
+					{
+						Pawn.unselect();
+					}
+				}
+			}
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		public function activateTouchPawns():void
+		{
+			if (verbose)	trace(this + "enter(" + arguments);
+			
+			for (var i:int = 0; i < this.board.pawns.length; i++ )
+			{
+				var pawn:Pawn = this.board.pawns[i];
+				try
+				{
+					pawn.addEventListener(TouchEvent.TOUCH, this.onTouchPawn);
+					
+				}
+				catch (e:Error)
+				{
+					trace(i);
+				}
+				
+			}
+		}
+		
+		
+		
+		
+		public function unactivateTouchPawns():void
+		{
 			if (verbose)	trace(this + "exit(" + arguments);
 			
 			for (var i:int = 0; i < this.board.pawns.length; i++ )
 			{
 				var pawn:Pawn = this.board.pawns[i];
-				try //if (pawn)	//	TODO this tweak is temporar for the time without refilling the board
+				try
 				{
-					//pawn.scaleX = pawn.scaleY = 0.5;
-					//this.isActive = false;
-					pawn.removeEventListener(TouchEvent.TOUCH, this.onTouch);
+					pawn.removeEventListener(TouchEvent.TOUCH, this.onTouchPawn);
 				}
 				catch (e:Error)
 				{
@@ -87,7 +174,7 @@ package thegame.states
 		 * 
 		 * @param	event
 		 */
-		private function onTouch(event:TouchEvent):void
+		private function onTouchPawn(event:TouchEvent):void
 		{
 			var touch:Touch = event.getTouch(this.board.stage);
 			

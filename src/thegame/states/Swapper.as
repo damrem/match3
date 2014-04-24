@@ -60,7 +60,7 @@ package thegame.states
 			if (verbose)	trace(this + "startSwappingPawn(" + arguments);
 				
 			var originXY:Point = new Point(pawn.x, pawn.y);
-			var destXY:Point = this.board.indexToXY(pawn.index);
+			var destXY:Point = this.board.getXYFromIndex(pawn.index);
 			var translation:Point = destXY.clone().subtract(originXY);
 			
 			var tween:Tween = new Tween(pawn, translation.length * 0.0075);

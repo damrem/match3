@@ -38,7 +38,7 @@ package thegame
 			if (verbose)	trace(this + "startMovingPawn(" + arguments);
 			
 			var originXY:Point = new Point(pawn.x, pawn.y);
-			var destXY:Point = this.board.indexToXY(pawn.index);
+			var destXY:Point = this.board.getXYFromIndex(pawn.index);
 			var translation:Point = destXY.clone().subtract(originXY);
 			var tween:Tween = new Tween(pawn, translation.length / 1000);
 			tween.moveTo(destXY.x, destXY.y);

@@ -33,6 +33,7 @@ package thegame
 			if (verbose)	trace(this + "GameController(" + arguments);
 			
 			this._board = new Board();
+			this._board.x = this._board.y = 100;
 			
 			this.fillAndFall = new FallAndFill(board);
 			this.fillAndFall.FILLED.add(this.gotoMatcher);
