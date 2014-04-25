@@ -1,5 +1,7 @@
 package 
 {
+	import flash.display.Stage;
+	import gui.ProgressBar;
 	import game.GameScreen;
 	import gui.IScreen;
 	import gui.GameOverScreen;
@@ -22,6 +24,8 @@ package
 
 		private var currentScreen:IScreen;
 		
+		private var fpsBar:ProgressBar;
+		
 		private var gameScreen:GameScreen;
 		private var gameOverScreen:GameOverScreen;
 		
@@ -33,6 +37,12 @@ package
 			this.fpsCounter = new FPSCounter();
 			this.addChild(this.fpsCounter);
 			this.addEventListener(EnterFrameEvent.ENTER_FRAME, this.onEnterFrame);
+			
+			this.fpsBar = new ProgressBar(256, 32, 2);
+			var stage:Stage =  Starling.current.nativeStage;
+			this.fpsBar.x = (stage.stageWidth - this.fpsBar.width) / 2;
+			this.fpsBar.y = (stage.stageHeight - this.fpsBar.height) / 2;
+			this.addChild(this.fpsBar);
 			
 			this.gameScreen = new GameScreen();
 			this.gameScreen.GAME_OVER.add(this.gotoGameOverScreen);
@@ -49,10 +59,14 @@ package
 		private function onEnterFrame(event:EnterFrameEvent):void
         {
 			//if (verbose)	trace(this + "onEnterFrame(" + arguments);
+			
+			this.fpsBar.setRatio(this.fpsCounter.fps / Starling.current.nativeStage.frameRate);
+			
 			if (this.fpsCounter.fps >= Starling.current.nativeStage.frameRate)
 			{
 				this.removeEventListener(EnterFrameEvent.ENTER_FRAME, this.onEnterFrame);
 				this.removeChild(this.fpsCounter);
+				this.removeChild(this.fpsBar);
 				this.fpsCounter = null;
 				
 				this.gotoGameScreen();
