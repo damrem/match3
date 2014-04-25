@@ -30,7 +30,7 @@ package game
 		/**
 		 * Useful for pivoting.
 		 */
-		public static const HALF_SIZE:int = 22;
+		//public static const HALF_SIZE:int = 22;
 		
 		public static const COLORS:Array = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff];
 		
@@ -66,7 +66,7 @@ package game
 		
 		private function drawGem():void
 		{
-			this.pivotX = this.pivotY = Pawn.HALF_SIZE;
+			//this.pivotX = this.pivotY = Pawn.HALF_SIZE;
 			var img:Image = new Image(Embeds.gemTextures[this.type]);
 			//img.x = img.y = Math.round(- Pawn.SIZE / 2);
 			this.addChild(img);

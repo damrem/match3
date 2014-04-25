@@ -180,33 +180,32 @@ package game
 		
 		
 		
-		public function getColFromIndex(index:int):int
+		public function getColFromIndex(index:int):uint
 		{
 			return index % WIDTH;
 		}
 		
-		public function getRowFromIndex(index:int):int
+		public function getRowFromIndex(index:int):uint
 		{
-			var row:int = index / WIDTH;
-			return row;
+			return index / WIDTH;
 		}
 		
 		public function getXfromCol(col:int):Number
 		{
-			return col * Pawn.SIZE + Pawn.HALF_SIZE;
+			return col * Pawn.SIZE;
 		}
 		
-		public function getColFromX(x:Number):int
+		public function getColFromX(x:Number):uint
 		{
 			return x / Pawn.SIZE;
 		}
 		
 		public function getYfromRow(row:int):Number
 		{
-			return row * Pawn.SIZE + Pawn.HALF_SIZE;
+			return row * Pawn.SIZE;
 		}
 		
-		public function getRowFromY(y:Number):int
+		public function getRowFromY(y:Number):uint
 		{
 			return y / Pawn.SIZE;
 		}
@@ -216,12 +215,16 @@ package game
 			return new Point(getXfromCol(getColFromIndex(index)), getYfromRow(getRowFromIndex(index)));
 		}
 		
-		public function getIndexFromXY(xy:Point):int
+		public function getIndexFromXY(xy:Point):uint
 		{
 			var col:int = this.getColFromX(xy.x);
 			var row:int = this.getRowFromY(xy.y);
 			
-			return row * WIDTH + col;
+			var index:int = row * WIDTH + col;
+			index = Math.max(index, 0);
+			index = Math.min(index, WIDTH * HEIGHT - 1);
+			
+			return index;
 		}
 		
 		/**

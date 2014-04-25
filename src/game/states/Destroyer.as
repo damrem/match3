@@ -56,6 +56,7 @@ package game.states
 			
 			tween.fadeTo(0.0);
 			tween.scaleTo(0.0);
+			tween.moveTo(pawn.x + Pawn.SIZE / 2, pawn.y + Pawn.SIZE / 2);
 			
 			this.tweens.push(tween);
 			
