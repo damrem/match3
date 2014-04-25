@@ -4,6 +4,7 @@ package game.states
 	import flash.utils.Timer;
 	import game.Board;
 	import game.Pawn;
+	import game.PawnPool;
 	import org.osflash.signals.Signal;
 	import starling.animation.Tween;
 	import starling.core.Starling;
@@ -112,6 +113,7 @@ package game.states
 		{
 			if (verbose)	trace(this + "endDestroyingPawn(" + arguments);
 			
+			PawnPool.savePawn(pawn);
 			this.board.pawns[pawn.index] = null;
 			this.board.holes.push(pawn.index);
 			if (verbose)	trace(this + "holes: " + this.board.holes);

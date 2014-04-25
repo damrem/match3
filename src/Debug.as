@@ -1,6 +1,8 @@
 package 
 {
 	import game.Board;
+	import game.Pawn;
+	import game.PawnPool;
 	import game.GameController;
 	import game.GameScreen;
 	import game.states.FallerAndFiller;
@@ -25,12 +27,14 @@ package
 				//GameScreen,
 				//GameController,
 				//InputListener,
-				//Destroyer,
+				Destroyer,
 				//Board, 
 				//Swapper,
 				FallerAndFiller,
 				//Assets,
-				//Matcher
+				//Matcher,
+				Pawn,
+				PawnPool
 			];
 			
 			for each(var classToDebug:Class in classes)

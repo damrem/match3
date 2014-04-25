@@ -3,6 +3,7 @@ package game.states
 	import flash.geom.Point;
 	import game.Board;
 	import game.Pawn;
+	import game.PawnPool;
 	import org.osflash.signals.Signal;
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
@@ -109,13 +110,16 @@ package game.states
 			for (i = 0; i< this.board.holes.length; i++)
 			{
 				hole = this.board.holes[i];
-				var pawn:Pawn = new Pawn(hole);
+				var pawn:Pawn = PawnPool.loadPawn(hole);
+				//new Pawn();
+				pawn.setIndex(hole);
 				
 				col = this.board.getColFromIndex(hole);
 				var nbHolesInCol:int = nbHolesPerCol[col];
 				
 				pawn.x = this.board.getXYFromIndex(hole).x;
-				if (verbose)	trace("index of generated pawn: " + pawn.index);
+				if (verbose)	trace("generated pawn: " + pawn);
+		
 				pawn.y = - Pawn.SIZE * nbHolesInCol + this.board.getRowFromIndex(pawn.index) * Pawn.SIZE;
 				if (verbose)	trace("y generated pawn: " + pawn.y);
 				

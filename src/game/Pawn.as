@@ -34,12 +34,29 @@ package game
 		
 		public static const COLORS:Array = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff];
 		
-		public function Pawn(_index:int) 
+		public function Pawn(/*_index:int*/) 
 		{
 			if (verbose)	trace(this + "Pawn(" + arguments);
 			
-			this.setIndex(_index);
+			//this.setIndex(_index);
+			
+			/*
 			this.type = Random.getInteger(0, 4);
+			
+			this.drawGem();
+			
+			Pawn.select(this);
+			Pawn.unselect();
+			*/
+		}
+		
+		public function reset():void
+		{
+			if(verbose)	trace(this + "reset(" + arguments);
+			this.type = Random.getInteger(0, 4);
+			
+			this.alpha = 1.0;
+			this.scaleX = this.scaleY = 1.0;
 			
 			this.drawGem();
 			
@@ -101,8 +118,13 @@ package game
 			return _selected;
 		}
 		
-		public function destroy():void
+		/**
+		 * Removes the graphics from its parent, and the contained graphics as well.
+		 */
+		public function remove():void
 		{
+			this.removeChildren();
+			
 			if (this.parent)
 			{
 				this.parent.removeChild(this);

@@ -80,24 +80,6 @@ package game
 			this.resetMatchablePawns();
 			this.resetFallablePawns();
 			this.resetDestroyablePawns();
-			
-			//this.fill();
-		}
-		
-		//	TODO no matches
-		public function fill():void
-		{
-			if(verbose)	trace(this + "fill(" + arguments);
-			for(var i:int = 0; i < WIDTH * HEIGHT; i++)
-			{
-				var pawn:Pawn = new Pawn(i);
-				pawn.x = (i % WIDTH) * Pawn.SIZE;
-				var row:int = Math.floor(i / WIDTH);
-				pawn.y = row * Pawn.SIZE;
-				this.pawns[i] = pawn;
-				this.pawnContainer.addChild(pawn);
-			}
-			
 		}
 		
 		public function getTopPawn(refPawn:Pawn):Pawn
