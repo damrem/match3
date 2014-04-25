@@ -6,7 +6,7 @@ package thegame
 	import thegame.states.AbstractState;
 	import thegame.states.Matcher;
 	import thegame.states.Destroyer;
-	import thegame.states.FallAndFill;
+	import thegame.states.FallerAndFiller;
 	import thegame.states.InputListener;
 	import thegame.states.Swapper;
 	/**
@@ -37,7 +37,7 @@ package thegame
 		//	the sub-controllers
 		private var matcher:Matcher;
 		private var destroyer:Destroyer;
-		private var fillAndFall:FallAndFill;
+		private var fallerAndFiller:FallerAndFiller;
 		private var inputListener:InputListener;
 		private var swapper:Swapper;
 		
@@ -49,10 +49,11 @@ package thegame
 			
 			this._board = new Board();
 			
-			this.fillAndFall = new FallAndFill(board);
-			this.fillAndFall.FILLED.add(this.gotoMatcher);
+			this.fallerAndFiller = new FallerAndFiller(board);
+			this.fallerAndFiller.FILLED.add(this.gotoMatcher);
 			
 			this.inputListener = new InputListener(board);
+			this.inputListener.SWAP_REQUESTED.addOnce(this.reallyStartPlaying);
 			this.inputListener.SWAP_REQUESTED.add(this.gotoSwapper);
 			
 			this.swapper = new Swapper(board);
@@ -60,14 +61,17 @@ package thegame
 			this.swapper.UNSWAPPED.add(this.gotoInputListener);
 
 			this.matcher = new Matcher(board);
-			this.updateScore();
-			this.matcher.MATCHES_FOUND.add(this.updateScore);
+			this.updateScore("GameController");
+			
+			//	
+			//this.matcher.MATCHES_FOUND.add(this.updateScore);
+			
 			this.matcher.MATCHES_FOUND.add(this.gotoDestroyer);
 			this.matcher.INVALID_SWAP.add(this.gotoSwapper);
 			this.matcher.NO_MATCHES_FOUND.add(this.gotoInputListener);
 			
 			this.destroyer = new Destroyer(board);
-			this.destroyer.ALL_ARE_DESTROYED.add(this.gotoFillAndFall);
+			this.destroyer.ALL_ARE_DESTROYED.add(this.gotoFillerAndFaller);
 		}
 		
 		public function start():void
@@ -76,12 +80,20 @@ package thegame
 			
 			this._timeLeft_sec = GAME_DURATION_MIN * 60;
 			this.timer.addEventListener(TimerEvent.TIMER, this.updateTimeLeft);
+
+			this.updateScore("start");
 			this.updateTimeLeft();
-			this.timer.start();
 			
-			//this.gotoInputListener();
 			this.board.fillWithHoles();
-			this.gotoFillAndFall();
+			this.gotoFillerAndFaller();
+		}
+		
+		//	At the beginning, there are matches, destructions, fallings and fillings:
+		//	we wait for this first wave of actions to start timer and score.
+		public function reallyStartPlaying():void
+		{
+			this.timer.start();
+			this.matcher.MATCHES_FOUND.add(this.updateScore);
 		}
 		
 		private function stop():void
@@ -94,13 +106,14 @@ package thegame
 			this.setState(null);
 		}
 		
-		private function updateScore():void 
+		private function updateScore(caller:String="other"):void 
 		{
 			if (verbose)	trace(this + "updateScore(" + arguments);
 			if (verbose)	trace();
 			
 			var matchScore:int = this.board.destroyablePawns.length;
 			matchScore -= 2;
+			matchScore = Math.max(matchScore, 0);
 			matchScore *= matchScore;
 			matchScore *= 10;
 			
@@ -128,6 +141,8 @@ package thegame
 		
 		private function setState(state:AbstractState):void
 		{
+			if (verbose)	trace(this + "setState(" + arguments);
+			
 			if (currentState)
 			{
 				currentState.exit();
@@ -135,11 +150,11 @@ package thegame
 			currentState = state;
 			if (currentState)
 			{
-				currentState.enter();
+				currentState.enter("gameController.setState");
 			}
 		}
 		
-		private function gotoInputListener():void
+		private function gotoInputListener(caller:String="other"):void
 		{
 			if (verbose)	trace(this + "gotoInputListener(" + arguments);
 			
@@ -172,11 +187,11 @@ package thegame
 			this.setState(this.destroyer);
 		}
 		
-		private function gotoFillAndFall():void 
+		private function gotoFillerAndFaller():void 
 		{
 			if (verbose)	trace(this + "gotoFillAndFall(" + arguments);
 			
-			this.setState(this.fillAndFall);
+			this.setState(this.fallerAndFiller);
 		}
 		
 		public function get board():Board 

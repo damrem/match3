@@ -15,7 +15,7 @@ package thegame.states
 			this.board = board;
 		}
 		
-		public function enter():void
+		public function enter(caller:String="other"):void
 		{
 			abstract(this, "enter");
 		}

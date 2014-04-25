@@ -28,10 +28,12 @@ package thegame.states
 		
 		public function Matcher(board:Board) 
 		{
+			if (verbose)	trace(this + "Matcher(" + arguments);
+			
 			super(board);
 		}
 		
-		override public function enter():void
+		override public function enter(caller:String="other"):void
 		{
 			if (verbose)	trace(this + "enter(" + arguments);
 			
@@ -39,7 +41,7 @@ package thegame.states
 			if (this.board.matchablePawns.length == 0)
 			{
 				if (verbose)	trace("NO MATCHES because no matchable pawns");
-				this.NO_MATCHES_FOUND.dispatch();
+				this.NO_MATCHES_FOUND.dispatch("matcher.enter with no matchables");
 				return;
 			}
 			
@@ -86,7 +88,7 @@ package thegame.states
 			{
 				if (verbose)	trace(this+"global check and no matches");
 				this.board.resetMatchablePawns();
-				this.NO_MATCHES_FOUND.dispatch();
+				this.NO_MATCHES_FOUND.dispatch("matcher.enter with no matches on board");
 			}
 			
 			//	any check and matches found

@@ -11,7 +11,7 @@ package thegame.states
 	 * It also generates/recycles gems at the top of the board.
 	 * @author damrem
 	 */
-	public class FallAndFill extends AbstractState
+	public class FallerAndFiller extends AbstractState
 	{
 		public static var verbose:Boolean;
 		/**
@@ -22,12 +22,14 @@ package thegame.states
 		
 		private var nbCompleted:int;
 		
-		public function FallAndFill(board:Board) 
+		public function FallerAndFiller(board:Board) 
 		{
+			if (verbose)	trace(this + "FallerAndFiller(" + arguments);
+			
 			super(board);
 		}
 		
-		override public function enter():void
+		override public function enter(caller:String="other"):void
 		{
 			if (verbose)	trace(this + "enter(" + arguments);
 			

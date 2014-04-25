@@ -22,10 +22,12 @@ package thegame.states
 
 		public function Destroyer(board:Board) 
 		{
+			if (verbose)	trace(this + "Destroyer(" + arguments);
+			
 			super(board);
 		}
 		
-		override public function enter():void
+		override public function enter(caller:String="other"):void
 		{
 			if (verbose)	trace(this + "enter(" + arguments);
 			

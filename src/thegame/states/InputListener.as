@@ -10,7 +10,7 @@ package thegame.states
 	import starling.events.Touch;
 	
 	/**
-	 * ...
+	 * This class setup the input event listener (and remove them as well).
 	 * @author damrem
 	 */
 	public class InputListener extends AbstractState
@@ -22,14 +22,14 @@ package thegame.states
 		
 		public function InputListener(board:Board) 
 		{
-			if (verbose)	trace(this + "Input(" + arguments);
+			if (verbose)	trace(this + "InputListener(" + arguments);
 			
 			super(board);
 		}
 		
-		override public function enter():void
+		override public function enter(caller:String="other"):void
 		{
-			if (verbose)	trace(this + "enter(" + arguments);
+			if (verbose)	trace(this + "enter(" + caller);
 			
 			this.activateTouchZone();
 		}
@@ -37,7 +37,7 @@ package thegame.states
 		
 		public function activateTouchZone(mustActivate:Boolean = true):void
 		{
-			if (verbose)	trace(this + "enter(" + arguments);
+			if (verbose)	trace(this + "activateTouchZone(" + arguments);
 			
 			if (mustActivate)
 			{

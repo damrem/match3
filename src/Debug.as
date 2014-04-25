@@ -3,7 +3,7 @@ package
 	import thegame.Board;
 	import thegame.GameController;
 	import thegame.GameScreen;
-	import thegame.states.FallAndFill;
+	import thegame.states.FallerAndFiller;
 	import thegame.states.InputListener;
 	import thegame.states.Matcher;
 	import thegame.states.Destroyer;
@@ -19,18 +19,18 @@ package
 		{
 			var classes:Vector.<Class> = new <Class>
 			[
-				Embeds,
-				Main,
-				Root,
+				//Embeds,
+				//Main,
+				//Root,
 				//GameScreen,
-				//GameController,
+				GameController,
 				InputListener,
-				//Destroyer,
+				Destroyer,
 				//Board, 
-				//Swapper,
+				Swapper,
+				FallerAndFiller,
 				//Assets,
-				//FallAndFill,
-				//Matcher
+				Matcher
 			];
 			
 			for each(var classToDebug:Class in classes)
