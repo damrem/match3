@@ -54,6 +54,7 @@ package game.states
 			if (verbose)	trace(this + "tween's target: " + tween.target);
 			
 			tween.fadeTo(0.0);
+			tween.scaleTo(0.0);
 			
 			this.tweens.push(tween);
 			
@@ -86,9 +87,9 @@ package game.states
 			{
 				if (verbose)	trace(this + "all destructions complete");
 				
-				this.endDestroyingAllDestroyablePawns();
-				
 				Starling.juggler.purge();
+				
+				this.endDestroyingAllDestroyablePawns();
 				
 				this.nbCompleted = 0;
 				this.ALL_ARE_DESTROYED.dispatch();

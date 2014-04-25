@@ -4,6 +4,7 @@ package game.states
 	import game.Board;
 	import game.Pawn;
 	import org.osflash.signals.Signal;
+	import starling.animation.Transitions;
 	import starling.animation.Tween;
 	import starling.core.Starling;
 	/**
@@ -20,7 +21,7 @@ package game.states
 		//public const BOARD_FILLED:Signal = new Signal();
 		public const FILLED:Signal = new Signal();
 		
-		public static const FALL_SPEED_PX_PER_SEC:Number = 180.0;
+		public static const FALL_SPEED_PX_PER_SEC:Number = 540.0;
 		
 		private var nbCompleted:int;
 		
@@ -164,7 +165,7 @@ package game.states
 			var destXY:Point = this.board.getXYFromIndex(pawn.index);
 			var translation:Point = destXY.clone().subtract(originXY);
 			
-			var tween:Tween = new Tween(pawn, translation.length / FALL_SPEED_PX_PER_SEC);
+			var tween:Tween = new Tween(pawn, translation.length / FALL_SPEED_PX_PER_SEC, Transitions.EASE_IN);
 			tween.moveTo(destXY.x, destXY.y);
 			tween.onComplete = this.onFallingComplete;
 			tween.onCompleteArgs = [pawn];
@@ -182,6 +183,10 @@ package game.states
 
 			if (this.nbCompleted == this.board.fallablePawns.length)
 			{
+				//	it is VERY IMPORTANT to purge the juggler BEFORE dispatching the signal
+				//	so that it is avalaible for animating the destructions
+				Starling.juggler.purge();
+
 				//	there are no more pawns to fall
 				this.board.resetFallablePawns();
 				this.nbCompleted = 0;
@@ -189,10 +194,6 @@ package game.states
 				//	all pawns must be checked
 				this.board.electAllPawnsForMatching();
 				
-				//	it is VERY IMPORTANT to purge the juggler BEFORE dispatching the signal
-				//	so that it is avalaible for animating the destructions
-				Starling.juggler.purge();
-
 				this.FILLED.dispatch();
 			}
 		}

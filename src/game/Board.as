@@ -188,7 +188,7 @@ package game
 		
 		public function getXfromCol(col:int):Number
 		{
-			return col * Pawn.SIZE;
+			return col * Pawn.SIZE + Pawn.HALF_SIZE;
 		}
 		
 		public function getColFromX(x:Number):int
@@ -198,7 +198,7 @@ package game
 		
 		public function getYfromRow(row:int):Number
 		{
-			return row * Pawn.SIZE;
+			return row * Pawn.SIZE + Pawn.HALF_SIZE;
 		}
 		
 		public function getRowFromY(y:Number):int
