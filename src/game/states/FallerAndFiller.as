@@ -1,8 +1,8 @@
-package thegame.states 
+package game.states 
 {
 	import flash.geom.Point;
-	import thegame.Board;
-	import thegame.Pawn;
+	import game.Board;
+	import game.Pawn;
 	import org.osflash.signals.Signal;
 	import starling.animation.Tween;
 	import starling.core.Starling;
@@ -19,6 +19,8 @@ package thegame.states
 		 */
 		//public const BOARD_FILLED:Signal = new Signal();
 		public const FILLED:Signal = new Signal();
+		
+		public static const FALL_SPEED_PX_PER_SEC:Number = 180.0;
 		
 		private var nbCompleted:int;
 		
@@ -94,12 +96,13 @@ package thegame.states
 			var hole:int;
 			var col:int;
 			
-			for (i = 0; i< this.board.holes.length - 1; i++)
+			for (i = 0; i< this.board.holes.length; i++)
 			{
 				hole = this.board.holes[i];
 				col = this.board.getColFromIndex(hole);
 				nbHolesPerCol[col] ++;
 			}
+			if (verbose)	trace("nbHolesPerCol: " + nbHolesPerCol);
 			
 			//	for each hole, we generate a pawn above the column
 			for (i = 0; i< this.board.holes.length; i++)
@@ -161,7 +164,7 @@ package thegame.states
 			var destXY:Point = this.board.getXYFromIndex(pawn.index);
 			var translation:Point = destXY.clone().subtract(originXY);
 			
-			var tween:Tween = new Tween(pawn, translation.length / 1000);
+			var tween:Tween = new Tween(pawn, translation.length / FALL_SPEED_PX_PER_SEC);
 			tween.moveTo(destXY.x, destXY.y);
 			tween.onComplete = this.onFallingComplete;
 			tween.onCompleteArgs = [pawn];

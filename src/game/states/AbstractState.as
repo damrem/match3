@@ -1,6 +1,6 @@
-package thegame.states 
+package game.states 
 {
-	import thegame.Board;
+	import game.Board;
 	import utils.abstract;
 	/**
 	 * ...

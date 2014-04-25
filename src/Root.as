@@ -2,7 +2,7 @@ package {
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.textures.Texture;
-	import thegame.GameScreen;
+	import game.GameScreen;
 
 	/**
 	 * @author damrem

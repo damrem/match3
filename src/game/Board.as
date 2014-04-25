@@ -1,4 +1,4 @@
-package thegame 
+package game 
 {
 	import starling.display.DisplayObjectContainer;
 	import flash.geom.Point;

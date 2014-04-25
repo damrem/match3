@@ -1,13 +1,13 @@
 package 
 {
-	import thegame.Board;
-	import thegame.GameController;
-	import thegame.GameScreen;
-	import thegame.states.FallerAndFiller;
-	import thegame.states.InputListener;
-	import thegame.states.Matcher;
-	import thegame.states.Destroyer;
-	import thegame.states.Swapper;
+	import game.Board;
+	import game.GameController;
+	import game.GameScreen;
+	import game.states.FallerAndFiller;
+	import game.states.InputListener;
+	import game.states.Matcher;
+	import game.states.Destroyer;
+	import game.states.Swapper;
 	import utils.getSimpleToString;
 	
 	/**
@@ -23,14 +23,14 @@ package
 				//Main,
 				//Root,
 				//GameScreen,
-				GameController,
-				InputListener,
-				Destroyer,
+				//GameController,
+				//InputListener,
+				//Destroyer,
 				//Board, 
-				Swapper,
+				//Swapper,
 				FallerAndFiller,
 				//Assets,
-				Matcher
+				//Matcher
 			];
 			
 			for each(var classToDebug:Class in classes)

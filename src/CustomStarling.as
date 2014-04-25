@@ -25,6 +25,8 @@ package
             this.enableErrorChecking = Capabilities.isDebugger;
 			
 			this.addEventListener(Event.ROOT_CREATED, this.onRootCreated);
+			
+			this.showStats = true;
 		}
 		
 		private function onRootCreated(event:Event, root:Root):void

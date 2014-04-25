@@ -1,7 +1,7 @@
-package thegame.states 
+package game.states 
 {
-	import thegame.Board;
-	import thegame.Pawn;
+	import game.Board;
+	import game.Pawn;
 	import org.osflash.signals.Signal;
 	import flash.geom.Point;
 	import starling.animation.Tween;
@@ -17,6 +17,8 @@ package thegame.states
 		
 		public const SWAPPED:Signal = new Signal();
 		public const UNSWAPPED:Signal = new Signal();
+		
+		public static const SWAP_SPEED_PX_PER_SEC:Number = 180.0;
 		
 		private var _isUnswapping:Boolean;
 		
@@ -65,7 +67,7 @@ package thegame.states
 			var destXY:Point = this.board.getXYFromIndex(pawn.index);
 			var translation:Point = destXY.clone().subtract(originXY);
 			
-			var tween:Tween = new Tween(pawn, translation.length * 0.0075);
+			var tween:Tween = new Tween(pawn, translation.length / SWAP_SPEED_PX_PER_SEC);
 			tween.moveTo(destXY.x, destXY.y);
 			
 			//	the tween callback only applies once

@@ -1,8 +1,8 @@
-package thegame.states 
+package game.states 
 {
 	import flash.utils.Dictionary;
-	import thegame.Board;
-	import thegame.Pawn;
+	import game.Board;
+	import game.Pawn;
 	import org.osflash.signals.Signal;
 	import utils.ToString;
 	/**

@@ -1,14 +1,14 @@
-package thegame 
+package game 
 {
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	import org.osflash.signals.Signal;
-	import thegame.states.AbstractState;
-	import thegame.states.Matcher;
-	import thegame.states.Destroyer;
-	import thegame.states.FallerAndFiller;
-	import thegame.states.InputListener;
-	import thegame.states.Swapper;
+	import game.states.AbstractState;
+	import game.states.Matcher;
+	import game.states.Destroyer;
+	import game.states.FallerAndFiller;
+	import game.states.InputListener;
+	import game.states.Swapper;
 	/**
 	 * ...
 	 * @author damrem

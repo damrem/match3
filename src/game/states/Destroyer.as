@@ -1,9 +1,9 @@
-package thegame.states 
+package game.states 
 {
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
-	import thegame.Board;
-	import thegame.Pawn;
+	import game.Board;
+	import game.Pawn;
 	import org.osflash.signals.Signal;
 	import starling.animation.Tween;
 	import starling.core.Starling;

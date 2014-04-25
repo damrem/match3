@@ -15,7 +15,7 @@ package {
 	/**
 	 * @author damrem
 	 */
-	[SWF(backgroundColor="#000000", frameRate=30, width="755", height="600")]
+	[SWF(backgroundColor="#000000", frameRate=60, width="755", height="600")]
 	public class Main extends MovieClip 
 	{
 		public static var verbose : Boolean;

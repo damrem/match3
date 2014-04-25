@@ -1,4 +1,4 @@
-package thegame 
+package game 
 {
 	import flash.display.Bitmap;
 	import starling.display.Sprite;
