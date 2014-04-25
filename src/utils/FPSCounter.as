@@ -34,7 +34,7 @@ package utils
 			if (verbose)	trace(this + "onEnterFrame(" + arguments);
 			
             this.totalTime += event.passedTime;
-			trace(totalTime + ">" + UPDATE_INTERVAL);
+
             this.frameCount++;
             
             if (this.totalTime > this.UPDATE_INTERVAL)

@@ -24,9 +24,9 @@ package
 			[
 				//Embeds,
 				//Main,
-				Root,
-				//GameScreen,
-				//GameController,
+				//Root,
+				GameScreen,
+				GameController,
 				//InputListener,
 				//Destroyer,
 				//Board, 
@@ -36,7 +36,7 @@ package
 				//Matcher,
 				//Pawn,
 				//PawnPool,
-				FPSCounter
+				//FPSCounter
 			];
 			
 			for each(var classToDebug:Class in classes)

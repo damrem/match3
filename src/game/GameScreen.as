@@ -46,12 +46,15 @@ package game
 		
 		public function start():void
 		{	
+			if (verbose)	trace(this + "start(" + arguments);
+			
 			this.controller.start();
 		}
 		
 		
 		private function timesUp():void 
 		{
+			if (verbose)	trace(this + "timesUp(" + arguments);
 			
 		}
 		

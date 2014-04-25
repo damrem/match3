@@ -22,7 +22,7 @@ package game.states
 		//public const BOARD_FILLED:Signal = new Signal();
 		public const FILLED:Signal = new Signal();
 		
-		public static const FALL_SPEED_PX_PER_SEC:Number = 540.0;
+		public static const FALL_SPEED_PX_PER_SEC:Number = 54.0;
 		
 		private var nbCompleted:int;
 		

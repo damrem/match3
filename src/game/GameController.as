@@ -9,6 +9,7 @@ package game
 	import game.states.FallerAndFiller;
 	import game.states.InputListener;
 	import game.states.Swapper;
+	import starling.core.Starling;
 	/**
 	 * Main controller of the game.
 	 * It handles the transition between the differents states/sub-controllers,
@@ -107,12 +108,29 @@ package game
 			this.timer.removeEventListener(TimerEvent.TIMER, this.updateTimeLeft);
 			
 			this.setState(null);
+			/*
+			this.destroyer.stop();
+			this.fallerAndFiller.stop();
+			this.inputListener.stop();
+			this.matcher.stop();
+			this.swapper.stop();
+			*/
+			/*
+			for (var i:int = 0; i < this.board.pawns.length; i++) 
+			{
+				var pawn:Pawn = this.board.pawns[i];
+				Starling.juggler.removeTweens(pawn);				
+			}
+			*/
+			//Starling.juggler.purge();
+			
+			this.swapper.UNSWAPPED.remove(this.gotoInputListener);
+			this.matcher.NO_MATCHES_FOUND.remove(this.gotoInputListener);
 		}
 		
 		private function updateScore(caller:String="other"):void 
 		{
 			if (verbose)	trace(this + "updateScore(" + arguments);
-			if (verbose)	trace();
 			
 			var matchScore:int = this.board.destroyablePawns.length;
 			matchScore -= 2;
