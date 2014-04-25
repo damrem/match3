@@ -54,8 +54,6 @@
   <!-- SWC Libraries -->
   <libraryPaths>
     <element path="lib" />
-    <element path="lib\starling.swc" />
-    <element path="lib\Starling-Extension-Graphics.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

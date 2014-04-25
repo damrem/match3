@@ -1,5 +1,6 @@
-package {
-	import fl.video.ReconnectClient;
+package 
+{
+	
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
 	import starling.textures.Texture;
