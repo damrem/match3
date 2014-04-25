@@ -17,7 +17,7 @@ package
 	/**
 	 * @author damrem
 	 */
-	public class Debug 
+	public class Verbosifier 
 	{		
 		public static function setup():void
 		{

@@ -36,7 +36,7 @@ package {
 		
 		public function Main() 
 		{
-			Debug.setup();
+			Verbosifier.setup();
 			
 			if(verbose)	trace(this + "Main(" + arguments);
 			
