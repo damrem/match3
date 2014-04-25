@@ -137,8 +137,11 @@ package game.states
 					//	When we release on the selected pawn, we do nothing.
 					else if (touch.phase == TouchPhase.ENDED)
 					{
-						trace(touch.getMovement(this.board.touchZone));
-						trace(touch.getPreviousLocation(this.board.touchZone));
+						if (verbose)
+						{
+							trace(touch.getMovement(this.board.touchZone));
+							trace(touch.getPreviousLocation(this.board.touchZone));
+						}
 						//Pawn.unselect();
 					}
 				}

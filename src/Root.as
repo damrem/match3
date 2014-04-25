@@ -65,9 +65,12 @@ package
 			if (this.fpsCounter.fps >= Starling.current.nativeStage.frameRate)
 			{
 				this.removeEventListener(EnterFrameEvent.ENTER_FRAME, this.onEnterFrame);
+
 				this.removeChild(this.fpsCounter);
-				this.removeChild(this.fpsBar);
 				this.fpsCounter = null;
+				
+				this.removeChild(this.fpsBar);
+				this.fpsBar = null;
 				
 				this.gotoGameScreen();
 			}

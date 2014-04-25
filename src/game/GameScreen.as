@@ -60,25 +60,7 @@ package game
 		}
 		
 		
-		private function timesUp():void 
-		{
-			if (verbose)	trace(this + "timesUp(" + arguments);
-			
-			/*
-			var boardTween:Tween = new Tween(this.controller.board, 0.25, Transitions.LINEAR);
-			boardTween.fadeTo(0.25);
-			Starling.juggler.add(boardTween);
-
-			var bgTween:Tween = new Tween(this.bg, 0.25, Transitions.LINEAR);
-			bgTween.fadeTo(0.25);
-			Starling.juggler.add(bgTween);
-			
-			var hudTween:Tween = new Tween(this.hud, 0.25, Transitions.LINEAR);
-			hudTween.moveTo((this.stage.stageWidth) / 2 - hud.width, (this.stage.stageHeight) / 2  -hud.height);
-			hudTween.scaleTo(1.0);
-			Starling.juggler.add(hudTween);
-			*/
-		}
+		
 		
 		private function createHUD():HUD
 		{
