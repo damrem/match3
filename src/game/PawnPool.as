@@ -1,5 +1,6 @@
 package game 
 {
+	import starling.core.Starling;
 	/**
 	 * ...
 	 * @author damrem
@@ -39,6 +40,9 @@ package game
 		static public function savePawn(pawn:Pawn):void
 		{
 			if (verbose)	trace(PawnPool + "savePawn(" + arguments);
+			//	since the pawns are pooled, they could be trapped in tweens, 
+			//	so we remove them from the juggler
+			Starling.juggler.removeTweens(pawn);
 			
 			PawnPool.instance;
 			pawn.remove();

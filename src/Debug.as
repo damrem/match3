@@ -12,6 +12,7 @@ package
 	import game.states.Swapper;
 	import utils.getSimpleToString;
 	import utils.FPSCounter;
+	import gui.GameOverScreen;
 	
 	/**
 	 * @author damrem
@@ -24,9 +25,10 @@ package
 			[
 				//Embeds,
 				//Main,
-				//Root,
+				Root,
 				GameScreen,
-				GameController,
+				GameOverScreen,
+				//GameController,
 				//InputListener,
 				//Destroyer,
 				//Board, 

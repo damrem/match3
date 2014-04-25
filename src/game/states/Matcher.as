@@ -70,7 +70,7 @@ package game.states
 				}
 			}
 			
-			trace(this+"matchables: " + this.board.matchablePawns);
+			if(verbose)	trace(this+"matchables: " + this.board.matchablePawns);
 			
 			//	swap check and no matches
 			if (this.board.matchablePawns.length == 2 && !areMatchesFound)

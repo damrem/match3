@@ -1,9 +1,8 @@
 package game 
 {
-	import starling.display.DisplayObjectContainer;
 	import flash.geom.Point;
-	import starling.animation.Tween;
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	/**
@@ -72,8 +71,12 @@ package game
 			WIDTH = w;
 			HEIGHT = h;
 			
-			//this.y = 135;
-			
+			this.reset();
+		}
+		
+		public function reset():void
+		{
+			if(this.pawns)	this.removeAllPawns();
 			this.pawns = new <Pawn>[];
 			this.resetHoles();
 			this.resetSwappablePawns();
@@ -81,6 +84,26 @@ package game
 			this.resetFallablePawns();
 			this.resetDestroyablePawns();
 		}
+		
+		private function removeAllPawns():void
+		{
+			for (var i:int = 0; i < this.pawns.length; i++) 
+			{
+				this.removePawn(this.pawns[i]);
+			}
+		}
+		
+		public function removePawn(pawn:Pawn):void
+		{
+			if (verbose)	trace(this + "removePawn(" + arguments);
+			
+			PawnPool.savePawn(pawn);
+			this.pawns[pawn.index] = null;
+			this.holes.push(pawn.index);
+			if (verbose)	trace(this + "holes: " + this.holes);
+		}
+		
+		
 		
 		public function getTopPawn(refPawn:Pawn):Pawn
 		{
@@ -325,6 +348,8 @@ package game
 		{
 			return (pawn1 == this.getLeftPawn(pawn2) || pawn1 == this.getRightPawn(pawn2) || pawn1 == this.getTopPawn(pawn2) || pawn1 == this.getBottomPawn(pawn2))
 		}
+		
+		
 		
 		
 		

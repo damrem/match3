@@ -75,7 +75,7 @@ package game.states
 		 */
 		private function onPawnDestructionComplete(pawn:Pawn):void 
 		{
-			/*if (verbose)*/	trace(this + "onPawnDestructionComplete(" + arguments);
+			if (verbose)	trace(this + "onPawnDestructionComplete(" + arguments);
 			
 			this.nbCompleted ++;
 			
@@ -103,21 +103,13 @@ package game.states
 			
 			for (var i:int = 0; i < this.board.destroyablePawns.length; i++) 
 			{
-				this.endDestroyingPawn(this.board.destroyablePawns[i]);
+				this.board.removePawn(this.board.destroyablePawns[i]);
 			}
 			
 			this.board.resetDestroyablePawns();
 		}
 		
-		private function endDestroyingPawn(pawn:Pawn):void
-		{
-			if (verbose)	trace(this + "endDestroyingPawn(" + arguments);
-			
-			PawnPool.savePawn(pawn);
-			this.board.pawns[pawn.index] = null;
-			this.board.holes.push(pawn.index);
-			if (verbose)	trace(this + "holes: " + this.board.holes);
-		}
+		
 		
 		override public function exit():void
 		{

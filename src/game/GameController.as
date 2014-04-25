@@ -22,11 +22,11 @@ package game
 		public static var verbose:Boolean;
 		
 		//	score management
-		private var _score:int;
+		private var _score:uint;
 		public const SCORE_UPDATED:Signal = new Signal();
 
 		//	time management
-		public static const GAME_DURATION_MIN:Number = 0.1;
+		public static const GAME_DURATION_MIN:Number = 0.05;
 		private var timer:Timer;
 		private var _timeLeft_sec:int;
 		public const TIME_LEFT_UPDATED:Signal = new Signal();
@@ -53,18 +53,28 @@ package game
 			
 			this._board = new Board();
 			
-			this.fallerAndFiller = new FallerAndFiller(board);
-			this.fallerAndFiller.FILLED.add(this.gotoMatcher);
+			this.fallerAndFiller = new FallerAndFiller(this._board);
+			this.inputListener = new InputListener(this._board);
+			this.swapper = new Swapper(this._board);
+			this.matcher = new Matcher(this._board);
+			this.destroyer = new Destroyer(this._board);
+
 			
-			this.inputListener = new InputListener(board);
+		}
+		
+		public function start():void
+		{
+			if (verbose)	trace(this + "start(" + arguments);
+			
+			
+			
+			this.fallerAndFiller.FILLED.add(this.gotoMatcher);
 			this.inputListener.SWAP_REQUESTED.addOnce(this.reallyStartPlaying);
 			this.inputListener.SWAP_REQUESTED.add(this.gotoSwapper);
 			
-			this.swapper = new Swapper(board);
 			this.swapper.SWAPPED.add(this.gotoMatcher);
 			this.swapper.UNSWAPPED.add(this.gotoInputListener);
 
-			this.matcher = new Matcher(board);
 			this.updateScore("GameController");
 			
 			//	this will be plugged only after a 1st swipe, to prevent scoring during initial board filling
@@ -74,17 +84,12 @@ package game
 			this.matcher.INVALID_SWAP.add(this.gotoSwapper);
 			this.matcher.NO_MATCHES_FOUND.add(this.gotoInputListener);
 			
-			this.destroyer = new Destroyer(board);
 			this.destroyer.ALL_ARE_DESTROYED.add(this.gotoFillerAndFaller);
-		}
-		
-		public function start():void
-		{
-			if (verbose)	trace(this + "start(" + arguments);
 			
 			this._timeLeft_sec = GAME_DURATION_MIN * 60;
 			this.timer.addEventListener(TimerEvent.TIMER, this.updateTimeLeft);
-
+			
+			this._score = 0;
 			this.updateScore("start");
 			this.updateTimeLeft();
 			
@@ -103,7 +108,7 @@ package game
 		/**
 		 * Unset the state and unplug all the signals.
 		 */
-		private function stop():void
+		public function stop():void
 		{
 			if (verbose)	trace(this + "stop(" + arguments);
 			
@@ -132,6 +137,8 @@ package game
 			this.matcher.NO_MATCHES_FOUND.removeAll();
 			
 			this.destroyer.ALL_ARE_DESTROYED.removeAll();
+			
+			this.board.reset();
 		}
 		
 		private function updateScore(caller:String="other"):void 
@@ -158,7 +165,7 @@ package game
 			if(this._timeLeft_sec < 0)
 			{
 				this.TIME_S_UP.dispatch();
-				this.stop();
+				//this.stop();
 			}
 			else
 			{
@@ -245,7 +252,7 @@ package game
 			return _board;
 		}
 		
-		public function get score():int 
+		public function get score():uint 
 		{
 			return _score;
 		}

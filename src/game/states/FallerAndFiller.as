@@ -187,16 +187,16 @@ package game.states
 
 			if (this.nbCompleted == this.board.fallablePawns.length)
 			{
-				//	it is VERY IMPORTANT to purge the juggler BEFORE dispatching the signal
-				//	so that it is avalaible for animating the destructions
-				Starling.juggler.purge();
-
 				//	there are no more pawns to fall
 				this.board.resetFallablePawns();
 				this.nbCompleted = 0;
 				
 				//	all pawns must be checked
 				this.board.electAllPawnsForMatching();
+				
+				//	it is VERY IMPORTANT to purge the juggler BEFORE dispatching the signal
+				//	so that it is avalaible for animating the destructions
+				Starling.juggler.purge();
 				
 				this.FILLED.dispatch();
 			}
