@@ -25,9 +25,9 @@ package
 			[
 				//Embeds,
 				//Main,
-				Root,
-				GameScreen,
-				GameOverScreen,
+				//Root,
+				//GameScreen,
+				//GameOverScreen,
 				//GameController,
 				//InputListener,
 				//Destroyer,

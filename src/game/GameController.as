@@ -26,7 +26,7 @@ package game
 		public const SCORE_UPDATED:Signal = new Signal();
 
 		//	time management
-		public static const GAME_DURATION_MIN:Number = 0.05;
+		public static const GAME_DURATION_MIN:Number = 1.0;
 		private var timer:Timer;
 		private var _timeLeft_sec:int;
 		public const TIME_LEFT_UPDATED:Signal = new Signal();
@@ -148,7 +148,7 @@ package game
 			var matchScore:int = this.board.destroyablePawns.length;
 			matchScore -= 2;
 			matchScore = Math.max(matchScore, 0);
-			matchScore *= matchScore;
+			matchScore *= Math.min(3, matchScore);
 			matchScore *= 10;
 			
 			this._score += matchScore;

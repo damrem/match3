@@ -19,12 +19,11 @@ package gui
 		{
 			this.drawTimer();
 			this.drawScore();
-			this.scaleX = this.scaleY = 0.5;
 		}
 		
 		private function drawScore():void
 		{
-			this.tfScore = new TextField(512, 128, "", "Courier New", 96, 0x000000, true);
+			this.tfScore = new TextField(240, 64, "", "Courier New", 48, 0x000000, true);
 			//tfScore.border = true;
 			this.tfScore.hAlign = HAlign.CENTER;
 			this.addChild(this.tfScore);
@@ -34,10 +33,10 @@ package gui
 		{
 			if (verbose)	trace(this + "drawTimer(" + arguments);
 			
-			this.tfTimeLeft = new TextField(512, 80, "", "Courier New", 64, 0x000000, true);
+			this.tfTimeLeft = new TextField(240, 40, "", "Courier New", 32, 0x000000, true);
 			//tfTimeLeft.border = true;
 			this.tfTimeLeft.hAlign = HAlign.CENTER;
-			this.tfTimeLeft.y = 100;
+			this.tfTimeLeft.y = 50;
 			this.addChild(this.tfTimeLeft);
 		}
 		

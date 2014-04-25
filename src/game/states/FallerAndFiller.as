@@ -169,6 +169,15 @@ package game.states
 			var destXY:Point = this.board.getXYFromIndex(pawn.index);
 			var translation:Point = destXY.clone().subtract(originXY);
 			
+			if (verbose)
+			{
+				
+				trace("originXY: "+originXY);
+				trace("destXY: " + destXY);
+				trace("translation: " + translation);
+				trace("--------");
+			}
+			
 			var tween:Tween = new Tween(pawn, translation.length / FALL_SPEED_PX_PER_SEC, Transitions.EASE_IN);
 			tween.moveTo(destXY.x, destXY.y);
 			tween.onComplete = this.onFallingComplete;

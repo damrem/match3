@@ -24,13 +24,14 @@ package gui
 		{
 			if (verbose)	trace(this + "GameOverScreen(" + arguments);
 			
-			tf = new TextField(512, 128, "", "Courier New", 32, 0xffffff, true);
 			var stage:Stage = Starling.current.nativeStage;
+
+			tf = new TextField(stage.stageWidth, stage.stageHeight, "", "Courier New", 32, 0xffffff, true);
 		
-			tf.x = (stage.stageWidth - tf.width) / 2;
-			tf.y = (stage.stageHeight - tf.height) / 2;
+			//tf.x = (stage.stageWidth - tf.width) / 2;
+			//tf.y = (stage.stageHeight - tf.height) / 2;
 		
-			tf.border = true;
+			//tf.border = true;
 			this.addChild(tf);
 			
 			this.tf.addEventListener(TouchEvent.TOUCH, this.onTouch);
@@ -48,8 +49,8 @@ package gui
 		
 		private function onTouch(event:TouchEvent):void 
 		{
-			var touch:Touch = event.getTouch(this.tf.stage);
-			if (touch.phase == TouchPhase.ENDED)
+			var touch:Touch = event.getTouch(this.tf);
+			if (touch && touch.phase == TouchPhase.ENDED)
 			{
 				this.PLAY_AGAIN.dispatch();
 			}

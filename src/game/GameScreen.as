@@ -65,7 +65,7 @@ package game
 		private function createHUD():HUD
 		{
 			var hud:HUD = new HUD();
-			hud.y = 425;
+			hud.y = 416;
 			
 			return hud;
 		}
