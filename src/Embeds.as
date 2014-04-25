@@ -12,6 +12,9 @@ package
 		[Embed(source = 'assets/textures/BackGround.jpg')]
 		public static const Background:Class;
 		
+		[Embed(source = 'assets/textures/BackGround-topMask.jpg')]
+		public static const BackgroundTopMask:Class;
+		
 		[Embed(source = 'assets/textures/Yellow.png')]
 		public static const Yellow:Class;
 		

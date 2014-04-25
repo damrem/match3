@@ -16,7 +16,7 @@ package game.states
 	{
 		public static var verbose:Boolean;
 		
-		static public const DESTRUCTION_DURATION_SEC:Number = 0.25;
+		static public const DESTRUCTION_DURATION_SEC:Number = 0.2;
 
 		private var nbCompleted:int = 0;
 		public const ALL_ARE_DESTROYED:Signal = new Signal();

@@ -4,6 +4,7 @@ package game
 	import gui.HUD;
 	import gui.IScreen;
 	import org.osflash.signals.Signal;
+	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	/**
@@ -23,6 +24,7 @@ package game
 		private var hud:HUD;
 		
 		private var bg:Image;
+		private var bgMask:Image;
 		
 		public function GameScreen() 
 		{
@@ -31,7 +33,8 @@ package game
 			//	loading textures needs to be done AFTER starling setup
 			Embeds.init();
 			
-			this.bg = this.drawBackground();
+			this.addChild(this.createBg());
+			this.bgMask = this.createBgMask();
 			this.hud = this.createHUD();
 			
 			this.controller = new GameController();
@@ -43,6 +46,8 @@ package game
 			this.controller.board.x = 324;
 			this.controller.board.y = 98;
 			this.addChild(this.controller.board);
+			
+			this.addChild(this.bgMask);
 			
 			this.addChild(this.hud);
 		}
@@ -70,13 +75,24 @@ package game
 			return hud;
 		}
 		
-		private function drawBackground():Image
+		/**
+		 * Masks the top of the board to hide appearing pawns.
+		 * @return
+		 */
+		private function createBgMask():Image
 		{
-			if (verbose)	trace(this + "drawBackground(" + arguments);
-			
+			var bmp:Bitmap = new Embeds.BackgroundTopMask();
+			var img:Image = Image.fromBitmap(bmp);
+			img.x = Starling.current.nativeStage.stageWidth - img.width;
+			return img;
+			//this.addChild(new Image(new Embeds.Background()));
+		}
+		
+		private function createBg():Image
+		{
 			var bmp:Bitmap = new Embeds.Background();
 			var img:Image = Image.fromBitmap(bmp);
-			this.addChild(img);
+			//this.addChild(img);
 			return img;
 			//this.addChild(new Image(new Embeds.Background()));
 		}
