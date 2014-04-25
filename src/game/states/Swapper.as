@@ -18,7 +18,7 @@ package game.states
 		public const SWAPPED:Signal = new Signal();
 		public const UNSWAPPED:Signal = new Signal();
 		
-		public static const SWAP_SPEED_PX_PER_SEC:Number = 180.0;
+		public static const SWAP_SPEED_PX_PER_SEC:Number = Pawn.SIZE * 4;
 		
 		private var _isUnswapping:Boolean;
 		

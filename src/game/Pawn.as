@@ -139,8 +139,11 @@ package game
 		
 		static public function unselect():void
 		{
-			Pawn._selected.alpha = 1.0;
-			Pawn._selected = null;
+			if (Pawn.selected)
+			{
+				Pawn._selected.alpha = 1.0;
+				Pawn._selected = null;
+			}
 		}
 		
 		public function toString():String

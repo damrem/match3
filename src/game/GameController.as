@@ -100,6 +100,9 @@ package game
 			this.matcher.MATCHES_FOUND.add(this.updateScore);
 		}
 		
+		/**
+		 * Unset the state and unplug all the signals.
+		 */
 		private function stop():void
 		{
 			if (verbose)	trace(this + "stop(" + arguments);
@@ -108,24 +111,27 @@ package game
 			this.timer.removeEventListener(TimerEvent.TIMER, this.updateTimeLeft);
 			
 			this.setState(null);
-			/*
-			this.destroyer.stop();
-			this.fallerAndFiller.stop();
-			this.inputListener.stop();
-			this.matcher.stop();
-			this.swapper.stop();
-			*/
-			/*
-			for (var i:int = 0; i < this.board.pawns.length; i++) 
-			{
-				var pawn:Pawn = this.board.pawns[i];
-				Starling.juggler.removeTweens(pawn);				
-			}
-			*/
-			//Starling.juggler.purge();
 			
-			this.swapper.UNSWAPPED.remove(this.gotoInputListener);
-			this.matcher.NO_MATCHES_FOUND.remove(this.gotoInputListener);
+			this.destroyer.exit();
+			this.fallerAndFiller.exit();
+			this.inputListener.exit();
+			this.matcher.exit();
+			this.swapper.exit();
+			
+			Pawn.unselect();
+			
+			this.fallerAndFiller.FILLED.removeAll();
+			
+			this.inputListener.SWAP_REQUESTED.removeAll();
+			
+			this.swapper.SWAPPED.removeAll();
+			this.swapper.UNSWAPPED.removeAll();
+
+			this.matcher.MATCHES_FOUND.removeAll();
+			this.matcher.INVALID_SWAP.removeAll();
+			this.matcher.NO_MATCHES_FOUND.removeAll();
+			
+			this.destroyer.ALL_ARE_DESTROYED.removeAll();
 		}
 		
 		private function updateScore(caller:String="other"):void 
@@ -139,7 +145,7 @@ package game
 			matchScore *= 10;
 			
 			this._score += matchScore;
-			this.SCORE_UPDATED.dispatch();
+			this.SCORE_UPDATED.dispatch(this.score);
 		}
 		
 		private function updateTimeLeft(e:TimerEvent=null):void 
@@ -156,7 +162,7 @@ package game
 			}
 			else
 			{
-				this.TIME_LEFT_UPDATED.dispatch();
+				this.TIME_LEFT_UPDATED.dispatch(this.timeLeft_sec);
 			}
 		}
 		

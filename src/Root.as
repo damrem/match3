@@ -18,6 +18,7 @@ package
 		
 		private var fpsCounter:FPSCounter;
 		private var gameScreen:GameScreen;
+		private var gameOverScreen:GameOverScreen;
 		
 		public function Root() 
 		{
@@ -29,6 +30,8 @@ package
 			this.addEventListener(EnterFrameEvent.ENTER_FRAME, this.onEnterFrame);
 			
 			this.gameScreen = new GameScreen();
+			
+			this.gameOverScreen = new GameOverScreen();
 			
 		}
 		

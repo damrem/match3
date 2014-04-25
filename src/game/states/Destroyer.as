@@ -124,11 +124,6 @@ package game.states
 			if (verbose)	trace(this + "exit(" + arguments);
 			//if (verbose)	trace(this.board.pawns);
 		}
-		
-		public function stop():void 
-		{
-			
-		}
 	}
 
 }

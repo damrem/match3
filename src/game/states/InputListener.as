@@ -54,6 +54,8 @@ package game.states
 			if (verbose)	trace(this + "exit(" + arguments);
 			
 			this.activateTouchZone(false);
+			
+			//Pawn.unselect();
 		}
 		
 		/**
