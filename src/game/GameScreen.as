@@ -1,10 +1,15 @@
 package game 
 {
 	import flash.display.Bitmap;
+	import flash.utils.getTimer;
+	import flash.utils.setTimeout;
+	import flash.utils.Timer;
 	import starling.display.Sprite;
 	import starling.display.Image;
 	import starling.text.TextField;
 	import utils.formatTime;
+	import flash.events.TimerEvent;
+	import starling.core.Starling;
 	/**
 	 * ...
 	 * @author damrem
@@ -37,9 +42,13 @@ package game
 			this.controller.board.x = 324;
 			this.controller.board.y = 98;
 			this.addChild(this.controller.board);
-			
+		}
+		
+		public function start():void
+		{	
 			this.controller.start();
 		}
+		
 		
 		private function timesUp():void 
 		{

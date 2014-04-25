@@ -11,6 +11,7 @@ package
 	import game.states.Destroyer;
 	import game.states.Swapper;
 	import utils.getSimpleToString;
+	import utils.FPSCounter;
 	
 	/**
 	 * @author damrem
@@ -23,18 +24,19 @@ package
 			[
 				//Embeds,
 				//Main,
-				//Root,
+				Root,
 				//GameScreen,
 				//GameController,
 				//InputListener,
-				Destroyer,
+				//Destroyer,
 				//Board, 
 				//Swapper,
-				FallerAndFiller,
+				//FallerAndFiller,
 				//Assets,
 				//Matcher,
-				Pawn,
-				PawnPool
+				//Pawn,
+				//PawnPool,
+				FPSCounter
 			];
 			
 			for each(var classToDebug:Class in classes)

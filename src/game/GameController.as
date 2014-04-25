@@ -10,7 +10,10 @@ package game
 	import game.states.InputListener;
 	import game.states.Swapper;
 	/**
-	 * ...
+	 * Main controller of the game.
+	 * It handles the transition between the differents states/sub-controllers,
+	 * depending on the signals they dispatch.
+	 * It also handles score and time.
 	 * @author damrem
 	 */
 	public class GameController 
@@ -22,7 +25,7 @@ package game
 		public const SCORE_UPDATED:Signal = new Signal();
 
 		//	time management
-		public static const GAME_DURATION_MIN:Number = 1.0;
+		public static const GAME_DURATION_MIN:Number = 0.1;
 		private var timer:Timer;
 		private var _timeLeft_sec:int;
 		public const TIME_LEFT_UPDATED:Signal = new Signal();
@@ -63,7 +66,7 @@ package game
 			this.matcher = new Matcher(board);
 			this.updateScore("GameController");
 			
-			//	
+			//	this will be plugged only after a 1st swipe, to prevent scoring during initial board filling
 			//this.matcher.MATCHES_FOUND.add(this.updateScore);
 			
 			this.matcher.MATCHES_FOUND.add(this.gotoDestroyer);
@@ -139,6 +142,10 @@ package game
 			}
 		}
 		
+		/**
+		 * Defines the current state, by exiting the previous one, and entering the specified one.
+		 * @param	state
+		 */
 		private function setState(state:AbstractState):void
 		{
 			if (verbose)	trace(this + "setState(" + arguments);
@@ -147,13 +154,19 @@ package game
 			{
 				currentState.exit();
 			}
+			
 			currentState = state;
+			
 			if (currentState)
 			{
 				currentState.enter("gameController.setState");
 			}
 		}
 		
+		/**
+		 * Enter the input state.
+		 * @param	caller
+		 */
 		private function gotoInputListener(caller:String="other"):void
 		{
 			if (verbose)	trace(this + "gotoInputListener(" + arguments);
@@ -173,6 +186,9 @@ package game
 			this.setState(this.swapper);
 		}
 		
+		/**
+		 * Enter the states which detects matches.
+		 */
 		private function gotoMatcher():void
 		{
 			if (verbose)	trace(this + "gotoMatcher(" + arguments);
@@ -180,6 +196,9 @@ package game
 			this.setState(this.matcher);
 		}
 		
+		/**
+		 * Enter the states which destroys pawns.
+		 */
 		private function gotoDestroyer():void 
 		{
 			if (verbose)	trace(this + "gotoDestroyer(" + arguments);
@@ -187,6 +206,9 @@ package game
 			this.setState(this.destroyer);
 		}
 		
+		/**
+		 * Enter the states which generates pawns and make them fall.
+		 */
 		private function gotoFillerAndFaller():void 
 		{
 			if (verbose)	trace(this + "gotoFillAndFall(" + arguments);
