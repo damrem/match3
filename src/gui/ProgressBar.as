@@ -1,7 +1,6 @@
 package gui
 {
 	import starling.display.Sprite;
-	//import flash.display.BitmapData;
 	import starling.display.Shape;
 
 	public class ProgressBar extends Sprite 

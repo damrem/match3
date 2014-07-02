@@ -43,8 +43,8 @@ package game
 			this.controller.TIME_LEFT_UPDATED.add(this.hud.updateTimeLeft);
 			this.controller.TIME_S_UP.add(this.GAME_OVER.dispatch);
 			
-			this.controller.board.x = 324;
-			this.controller.board.y = 98;
+			this.controller.board.x = 40;
+			this.controller.board.y = 40;
 			this.addChild(this.controller.board);
 			
 			this.addChild(this.bgMask);
@@ -70,7 +70,8 @@ package game
 		private function createHUD():HUD
 		{
 			var hud:HUD = new HUD();
-			hud.y = 416;
+			hud.x = 40;
+			hud.y = 360;
 			
 			return hud;
 		}
@@ -83,18 +84,15 @@ package game
 		{
 			var bmp:Bitmap = new Embeds.BackgroundTopMask();
 			var img:Image = Image.fromBitmap(bmp);
-			img.x = Starling.current.nativeStage.stageWidth - img.width;
+			//img.x = Starling.current.nativeStage.stageWidth - img.width;
 			return img;
-			//this.addChild(new Image(new Embeds.Background()));
 		}
 		
 		private function createBg():Image
 		{
 			var bmp:Bitmap = new Embeds.Background();
 			var img:Image = Image.fromBitmap(bmp);
-			//this.addChild(img);
 			return img;
-			//this.addChild(new Image(new Embeds.Background()));
 		}
 		
 		public function get score():uint

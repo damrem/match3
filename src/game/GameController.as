@@ -10,6 +10,7 @@ package game
 	import game.states.InputListener;
 	import game.states.Swapper;
 	import starling.core.Starling;
+	
 	/**
 	 * Main controller of the game.
 	 * It handles the transition between the differents states/sub-controllers,

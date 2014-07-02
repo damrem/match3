@@ -5,8 +5,9 @@ package game
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Quad;
 	import starling.display.Sprite;
+	
 	/**
-	 * ...
+	 * The board would be the model in an MVC pattern.
 	 * @author damrem
 	 */
 	public class Board extends Sprite
@@ -160,12 +161,10 @@ package game
 		
 		public function getLeftPawn(refPawn:Pawn):Pawn
 		{
-			//if (verbose)	trace(refPawn.index + "%" + WIDTH + "=" + (refPawn.index % WIDTH));
 			if (refPawn.index % WIDTH == 0)
 			{
 				return null;
 			}
-			//if (verbose)	trace("pawns[" + (refPawn.index - 1) + "]=" + this.pawns[refPawn.index - 1]);
 			return this.pawns[refPawn.index - 1];
 		}
 		
@@ -343,10 +342,12 @@ package game
 			this.destroyablePawns.push(pawn);
 		}
 		
-		
-		
-		
-		
+		/**
+		 * Detects if two specified pawns are neighbors in the grid.
+		 * @param	pawn1	1st pawn.
+		 * @param	pawn2	2nd pawn.
+		 * @return	Whether two specified pawns are neighbors in the grid.
+		 */
 		public function arePawnsNeighbors(pawn1:Pawn, pawn2:Pawn):Boolean
 		{
 			return (pawn1 == this.getLeftPawn(pawn2) || pawn1 == this.getRightPawn(pawn2) || pawn1 == this.getTopPawn(pawn2) || pawn1 == this.getBottomPawn(pawn2))

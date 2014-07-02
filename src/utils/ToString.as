@@ -8,10 +8,6 @@ package utils
 	public class ToString 
 	{
 		
-		public function ToString() 
-		{
-		}
-		
 		public static function dictionary(_dictionary:Dictionary):String
 		{
 			var string:String = "<dictionary>";

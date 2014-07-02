@@ -23,9 +23,8 @@ package gui
 		
 		private function drawScore():void
 		{
-			this.tfScore = new TextField(240, 64, "", "Courier New", 48, 0x000000, true);
-			//tfScore.border = true;
-			this.tfScore.hAlign = HAlign.CENTER;
+			this.tfScore = new TextField(240, 40, "", "Courier New", 32, 0xffffff, true);
+			this.tfScore.hAlign = HAlign.LEFT;
 			this.addChild(this.tfScore);
 		}
 		
@@ -33,10 +32,9 @@ package gui
 		{
 			if (verbose)	trace(this + "drawTimer(" + arguments);
 			
-			this.tfTimeLeft = new TextField(240, 40, "", "Courier New", 32, 0x000000, true);
-			//tfTimeLeft.border = true;
-			this.tfTimeLeft.hAlign = HAlign.CENTER;
-			this.tfTimeLeft.y = 50;
+			this.tfTimeLeft = new TextField(240, 40, "", "Courier New", 24, 0xffffff, true);
+			this.tfTimeLeft.hAlign = HAlign.RIGHT;
+			this.tfTimeLeft.x = 320 - tfTimeLeft.width;
 			this.addChild(this.tfTimeLeft);
 		}
 		

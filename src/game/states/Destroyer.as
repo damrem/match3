@@ -1,15 +1,12 @@
 package game.states 
 {
-	import flash.events.TimerEvent;
-	import flash.utils.Timer;
 	import game.Board;
 	import game.Pawn;
-	import game.PawnPool;
 	import org.osflash.signals.Signal;
 	import starling.animation.Tween;
 	import starling.core.Starling;
 	/**
-	 * ...
+	 * Controller which handles pawn-destruction animation.
 	 * @author damrem
 	 */
 	public class Destroyer extends AbstractState
@@ -20,6 +17,8 @@ package game.states
 
 		private var nbCompleted:int = 0;
 		public const ALL_ARE_DESTROYED:Signal = new Signal();
+		
+		private var tweens:Vector.<Tween>;
 
 		public function Destroyer(board:Board) 
 		{
@@ -43,7 +42,6 @@ package game.states
 			}
 		}
 		
-		private var tweens:Vector.<Tween>;
 		private function startDestroyingPawn(pawn:Pawn):void
 		{
 			if (!this.tweens)	this.tweens = new <Tween>[];
@@ -80,9 +78,6 @@ package game.states
 			
 			this.nbCompleted ++;
 			
-			//	we register the hole
-			//this.endDestroyingPawn(pawn);
-
 			if (verbose)	trace("completed: " + this.nbCompleted+"/"+this.board.destroyablePawns.length);
 
 			if (this.nbCompleted == this.board.destroyablePawns.length)
@@ -112,10 +107,9 @@ package game.states
 		
 		
 		
-		override public function exit():void
+		override public function exit(caller:String="other"):void
 		{
 			if (verbose)	trace(this + "exit(" + arguments);
-			//if (verbose)	trace(this.board.pawns);
 		}
 	}
 

@@ -11,3 +11,5 @@ bin-release/
 # information for Eclipse / Flash Builder.
 
 /obj
+
+Thumbs.db

@@ -1,13 +1,13 @@
 package game.states 
 {
+	import flash.geom.Point;
 	import game.Board;
 	import game.Pawn;
 	import org.osflash.signals.Signal;
-	import flash.geom.Point;
 	import starling.animation.Tween;
 	import starling.core.Starling;
 	/**
-	 * ...
+	 * Controller that handles pawn-swapping.
 	 * @author damrem
 	 */
 	public class Swapper extends AbstractState
@@ -71,10 +71,7 @@ package game.states
 			tween.moveTo(destXY.x, destXY.y);
 			
 			//	the tween callback only applies once
-			//if (side)
-			{
-				tween.onComplete = this.onSwappingComplete;
-			}
+			tween.onComplete = this.onSwappingComplete;
 			
 			Starling.juggler.add(tween);
 		}
@@ -99,7 +96,7 @@ package game.states
 			}
 		}
 		
-		override public function exit():void
+		override public function exit(caller:String="other"):void
 		{
 			if (verbose)	trace(this + "exit(" + arguments);
 			if (verbose)	trace(this.board.pawns);

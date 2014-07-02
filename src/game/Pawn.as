@@ -25,31 +25,22 @@ package game
 		
 		public var debugTf:TextField;
 		
-		public static const SIZE:int = 45;
-		
-		/**
-		 * Useful for pivoting.
-		 */
-		//public static const HALF_SIZE:int = 22;
+		public static const SIZE:int = 40;
 		
 		public static const COLORS:Array = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff];
 		
-		public function Pawn(/*_index:int*/) 
+		/**
+		 * Does nothing.
+		 * The pawn 'construction' is made by the reset() method for pooling.
+		 */
+		public function Pawn()
 		{
 			if (verbose)	trace(this + "Pawn(" + arguments);
-			
-			//this.setIndex(_index);
-			
-			/*
-			this.type = Random.getInteger(0, 4);
-			
-			this.drawGem();
-			
-			Pawn.select(this);
-			Pawn.unselect();
-			*/
 		}
 		
+		/**
+		 * Replaces the constructor. Useful for pooling.
+		 */
 		public function reset():void
 		{
 			if(verbose)	trace(this + "reset(" + arguments);
@@ -66,9 +57,7 @@ package game
 		
 		private function drawGem():void
 		{
-			//this.pivotX = this.pivotY = Pawn.HALF_SIZE;
 			var img:Image = new Image(Embeds.gemTextures[this.type]);
-			//img.x = img.y = Math.round(- Pawn.SIZE / 2);
 			this.addChild(img);
 			
 		}
@@ -81,7 +70,7 @@ package game
 			{
 				this.debugTf = new TextField(SIZE, SIZE/2, "");
 				this.updateDebug();
-				//this.addChild(this.debugTf);
+				if(verbose)	this.addChild(this.debugTf);
 			}
 			
 		}

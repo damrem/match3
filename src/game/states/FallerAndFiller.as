@@ -8,6 +8,7 @@ package game.states
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
 	import starling.core.Starling;
+	
 	/**
 	 * Controller that handles the fall of gems when there are holes.
 	 * It also generates/recycles gems at the top of the board.
@@ -16,10 +17,10 @@ package game.states
 	public class FallerAndFiller extends AbstractState
 	{
 		public static var verbose:Boolean;
+		
 		/**
 		 * Dispatched when the board is filled so that we can set another state (Check).
 		 */
-		//public const BOARD_FILLED:Signal = new Signal();
 		public const FILLED:Signal = new Signal();
 		
 		public static const FALL_SPEED_PX_PER_SEC:Number = Pawn.SIZE * 12;
@@ -211,7 +212,7 @@ package game.states
 			}
 		}
 		
-		override public function exit():void
+		override public function exit(caller:String="other"):void
 		{
 			if (verbose)	trace(this + "exit(" + arguments);
 			if (verbose)	trace(this.board.pawns);

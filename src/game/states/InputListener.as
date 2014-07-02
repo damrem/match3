@@ -49,13 +49,11 @@ package game.states
 			}
 		}
 		
-		override public function exit():void
+		override public function exit(caller:String="other"):void
 		{
 			if (verbose)	trace(this + "exit(" + arguments);
 			
 			this.activateTouchZone(false);
-			
-			//Pawn.unselect();
 		}
 		
 		/**

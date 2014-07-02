@@ -1,12 +1,10 @@
 package game.states 
 {
-	import flash.utils.Dictionary;
 	import game.Board;
 	import game.Pawn;
 	import org.osflash.signals.Signal;
-	import utils.ToString;
 	/**
-	 * ...
+	 * Controller which detects matches.
 	 * @author damrem
 	 */
 	public class Matcher extends AbstractState
@@ -16,15 +14,6 @@ package game.states
 		public const NO_MATCHES_FOUND:Signal = new Signal();
 		public const MATCHES_FOUND:Signal = new Signal();
 		public const INVALID_SWAP:Signal = new Signal();
-		
-		/**
-		 * The context  within which we check matchings.
-		 */
-		/*
-		public var matchingContext:int;
-		public static const FILL:int = 0;
-		public static const SWAP:int = 1;
-		*/
 		
 		public function Matcher(board:Board) 
 		{
@@ -44,10 +33,6 @@ package game.states
 				this.NO_MATCHES_FOUND.dispatch("matcher.enter with no matchables");
 				return;
 			}
-			
-			
-			
-			
 			
 			//	we check if there are matches
 			//	for each matchable pawn
@@ -77,8 +62,6 @@ package game.states
 			{
 				if (verbose)	trace(this+"swap check and no matches");
 				this.board.electPawnsForSwapping(this.board.matchablePawns[0], this.board.matchablePawns[1]);
-				//this.board.electPawnsForSwappingswappablePawns[0] = this.board.matchablePawns[0];
-				//this.board.swappablePawns[1] = this.board.matchablePawns[1];
 				this.board.resetMatchablePawns();
 				this.INVALID_SWAP.dispatch(true);
 			}
@@ -98,41 +81,6 @@ package game.states
 				this.board.resetMatchablePawns();
 				this.MATCHES_FOUND.dispatch();
 			}
-			
-			
-			
-			
-			/*
-			//	if pawns (the 2 swapped, or all the board) have to be checked, 
-			//	we check them and elect the matching one for destruction
-			else
-			{
-				
-				
-				//	if it's a swap (2 matchables only) and no match are found, we elect them for swapping again.
-				if (!areMatchesFound && this.board.matchablePawns.length == 2)
-				{
-					if(verbose)	trace(this + "INVALID SWAP");
-					this.board.swappablePawns[0] = this.board.matchablePawns[0];
-					this.board.swappablePawns[1] = this.board.matchablePawns[1];
-					this.INVALID_SWAP.dispatch();
-				}
-				
-				this.board.resetMatchablePawns();
-				
-				if (areMatchesFound)
-				{
-					if (verbose)	trace("MATCHES FOUND");
-					this.MATCHES_FOUND.dispatch();
-				}
-				else
-				{
-					if (verbose)	trace("NO MATCHES because of invalid swap");
-					
-					this.NO_MATCHES_FOUND.dispatch();
-				}
-			}
-			*/
 		}
 		
 		private function electMatchesForDestruction(matches:Vector.<Vector.<Pawn>>):void
@@ -157,6 +105,11 @@ package game.states
 			if(verbose)	trace("destroyables: " + this.board.destroyablePawns);
 		}
 		
+		/**
+		 * TODO Unit test me!
+		 * @param	pawn
+		 * @return	The pawns matching the specified pawn. It's a vector, containing a vector of vectors of pawns: the horizontal match and the vertical match (if they're at least 3-long).
+		 */
 		private function getMatches(pawn:Pawn):Vector.<Vector.<Pawn>>
 		{
 			var hMatch:Vector.<Pawn> = this.getHorizontalMatch(pawn);
@@ -170,23 +123,24 @@ package game.states
 			return matches;
 			
 		}
-		
+
+		/**
+		 * TODO Unit test me!
+		 * @param	pawn
+		 * @return	The pawns horizontally matching the specified pawn, whatever the length (1 if no actual match).
+		 */
 		private function getHorizontalMatch(pawn:Pawn):Vector.<Pawn>
 		{
-			//if (verbose)	trace(this + "getHorizontalMatch(" + arguments);
-			
 			var match:Vector.<Pawn> = new <Pawn>[];
 			match.push(pawn);
 			
 			var l:Pawn = this.board.getLeftPawn(pawn);
-			//if(verbose)	trace("l:"+l);
 			
 			if (l && l.type == pawn.type)
 			{
 				match.push(l);
 				
 				var ll:Pawn = this.board.getLeftPawn(l);
-				//if(verbose)	trace("ll:"+ll);
 				
 				if (ll && ll.type == pawn.type)
 				{
@@ -194,25 +148,28 @@ package game.states
 				}
 			}
 			var r:Pawn = this.board.getRightPawn(pawn);
-			//if(verbose)	trace("r:" + r);
+
 			if (r && r.type == pawn.type)
 			{
 				match.push(r);
 				var rr:Pawn = this.board.getRightPawn(r);
-				//if(verbose)	trace("rr:" + rr);
+
 				if (rr && rr.type == pawn.type)
 				{
 					match.push(rr);
 				}
 			}
-			//if (verbose)	trace("horizontal: " + match);
+
 			return match;
 		}
 		
+		/**
+		 * TODO Unit test me!
+		 * @param	pawn
+		 * @return	The pawns vertically matching the specified pawn, whatever the length (1 if no actual match).
+		 */
 		private function getVerticalMatch(pawn:Pawn):Vector.<Pawn>
 		{
-			//if (verbose)	trace(this + "getVerticalMatch(" + arguments);
-			
 			var match:Vector.<Pawn> = new <Pawn>[];
 			match.push(pawn);
 			
@@ -236,14 +193,12 @@ package game.states
 					match.push(bb);
 				}
 			}
-			//if (verbose)	trace("vertical: " + match);
 			return match;
 		}
 		
-		override public function exit():void
+		override public function exit(caller:String="other"):void
 		{
 			if (verbose)	trace(this + "exit(" + arguments);
-			//if (verbose)	trace(this.board.pawns);
 		}
 	}
 

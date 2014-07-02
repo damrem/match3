@@ -26,12 +26,8 @@ package gui
 			
 			var stage:Stage = Starling.current.nativeStage;
 
-			tf = new TextField(stage.stageWidth, stage.stageHeight, "", "Courier New", 32, 0xffffff, true);
+			tf = new TextField(stage.stageWidth, stage.stageHeight, "", "Courier New", 24, 0xffffff, true);
 		
-			//tf.x = (stage.stageWidth - tf.width) / 2;
-			//tf.y = (stage.stageHeight - tf.height) / 2;
-		
-			//tf.border = true;
 			this.addChild(tf);
 			
 			this.tf.addEventListener(TouchEvent.TOUCH, this.onTouch);
@@ -58,8 +54,8 @@ package gui
 		
 		public function updateScore(score:uint):void
 		{
-			this.tf.text = "Game Over!\n";
-			this.tf.text += "Final score:"+score+"\n";
+			this.tf.text = "Time's up!\n";
+			this.tf.text += "Final score: "+score+"\n";
 			this.tf.text += "Click to play again...";
 		}
 		
